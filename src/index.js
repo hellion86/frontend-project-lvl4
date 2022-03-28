@@ -15,7 +15,7 @@ p.textContent = 'It works!';
 
 const h5 = document.createElement('h5');
 h5.classList.add('card-title');
-h5.textContent = 'Project frontend l4 boilerplate';
+h5.textContent = 'Project frontend l4 ready. But not want work on heroku';
 
 const cardBody = document.createElement('div');
 cardBody.classList.add('card-body');
