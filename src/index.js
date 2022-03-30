@@ -2,7 +2,6 @@
 
 import 'core-js/stable/index.js';
 import 'regenerator-runtime/runtime.js';
-
 import '../assets/application.scss';
 
 if (process.env.NODE_ENV !== 'production') {
@@ -15,7 +14,7 @@ p.textContent = 'It works!';
 
 const h5 = document.createElement('h5');
 h5.classList.add('card-title');
-h5.textContent = 'Project frontend l4 ready. But not want work on heroku';
+h5.textContent = 'Project frontend l4 ready. But not wont work on heroku';
 
 const cardBody = document.createElement('div');
 cardBody.classList.add('card-body');
