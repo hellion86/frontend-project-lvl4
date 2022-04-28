@@ -1,4 +1,6 @@
 /* eslint-disable */
+import "bootstrap/dist/js/bootstrap.bundle.min.js";
+import "bootstrap/scss/bootstrap.scss";
 import React from "react";
 import { useState } from "react";
 import {
@@ -8,16 +10,13 @@ import {
   Navigate,
   useLocation,
 } from "react-router-dom";
-import "bootstrap/dist/js/bootstrap.bundle.min.js";
-import "bootstrap/scss/bootstrap.scss";
-import { Button, Navbar, Nav } from "react-bootstrap";
+import { Navbar, Button } from "react-bootstrap";
 import Login from "./Login/Login.jsx";
 import Page404 from "./404/Page404.jsx";
 import Registration from "./Registration/Registration.jsx";
-
+import Chat from "./Chat/Chat.jsx";
 import AuthContext from "../contexts/index.jsx";
 import useAuth from "../hooks/index.jsx";
-import Chat from "./Chat/Chat.jsx";
 
 const AuthProvider = ({ children }) => {
   const [loggedIn, setLoggedIn] = useState(false);
@@ -39,24 +38,37 @@ const PrivateRoute = ({ children }) => {
   return auth.loggedIn ? (
     children
   ) : (
-    <Navigate to="/chat" state={{ from: location }} />
+    <Navigate to="/login" state={{ from: location }} />
   );
 };
 
+const LogOutButton = () => {
+  const auth = useAuth();
+
+  return auth.loggedIn ? <Button onClick={auth.logOut}>Log out</Button> : null;
+};
 
 const App = () => {
   return (
     <AuthProvider>
       <BrowserRouter>
-        <Navbar variant="light" bg="white" expand="lg" className="shadow-sm" >
-          <Navbar.Brand href="/">Hexlet Chat</Navbar.Brand>
+        <Navbar variant="light" bg="light" expand="lg" className="shadow-sm">
+          <Navbar.Brand>Hexlet Chat</Navbar.Brand>
+          <LogOutButton />
         </Navbar>
+
         <Routes>
-          <Route path="/" element={<Login />} />
           <Route path="/login" element={<Login />} />
-          <Route path="/chat" element={<Chat />} />
           <Route path="/registration" element={<Registration />} />
           <Route path="*" element={<Page404 />} />
+          <Route
+            path="/"
+            element={
+              <PrivateRoute>
+                <Chat />
+              </PrivateRoute>
+            }
+          />
         </Routes>
       </BrowserRouter>
     </AuthProvider>

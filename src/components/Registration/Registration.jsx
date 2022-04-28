@@ -45,7 +45,7 @@ const Registration = () => {
               <InputGroup hasValidation>
                 <FloatingLabel
                   controlId="floatingInputName"
-                  label="name"
+                  label="Имя пользователя"
                   className="mb-3"
                 >
                   <Form.Control
@@ -72,7 +72,7 @@ const Registration = () => {
               <InputGroup hasValidation>
                 <FloatingLabel
                   controlId="floatingInputPassword"
-                  label="password"
+                  label="Пароль"
                 >
                   <Form.Control
                     type="password"
@@ -98,7 +98,7 @@ const Registration = () => {
               <InputGroup hasValidation>
                 <FloatingLabel
                   controlId="floatingInputConfirmPassword"
-                  label="password confirm"
+                  label="Подтвердите пароль"
                 >
                   <Form.Control
                     type="password"
@@ -116,7 +116,7 @@ const Registration = () => {
               </InputGroup>
             </Form.Group>
           
-            <Button type="submit">Registration</Button>
+            <Button type="submit">Регистрация</Button>
           </Form>
         </>
       )}
