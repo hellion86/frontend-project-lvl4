@@ -1,6 +1,4 @@
 /* eslint-disable */
-import "bootstrap/dist/js/bootstrap.bundle.min.js";
-import "bootstrap/scss/bootstrap.scss";
 import React from "react";
 import { useState } from "react";
 import {
@@ -22,7 +20,10 @@ const AuthProvider = ({ children }) => {
   const [loggedIn, setLoggedIn] = useState(false);
 
   const logIn = () => setLoggedIn(true);
-  const logOut = () => setLoggedIn(false);
+  const logOut = () => {
+    localStorage.removeItem('userId')
+    setLoggedIn(false);
+  }
 
   return (
     <AuthContext.Provider value={{ loggedIn, logIn, logOut }}>
@@ -44,7 +45,6 @@ const PrivateRoute = ({ children }) => {
 
 const LogOutButton = () => {
   const auth = useAuth();
-
   return auth.loggedIn ? <Button onClick={auth.logOut}>Log out</Button> : null;
 };
 

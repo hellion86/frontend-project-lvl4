@@ -20,6 +20,7 @@ const Login = (props) => {
   const navigate = useNavigate();
   const auth = useAuth();
   const { state } = props;
+  console.log(localStorage)
   return (
     <Formik
       initialValues={{
