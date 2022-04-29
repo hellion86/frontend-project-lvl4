@@ -1,23 +1,23 @@
-/* eslint-disable */
-import React, { useState } from "react";
-import axios from "axios";
-import { Formik } from "formik";
+/* eslint-disable react/function-component-definition */
+import React, { useState } from 'react';
+import axios from 'axios';
+import { Formik } from 'formik';
 import {
   Form,
   Button,
   FloatingLabel,
   Container,
-} from "react-bootstrap";
-import { Link, useLocation, useNavigate } from "react-router-dom";
-import { Card } from "react-bootstrap";
-import useAuth from "../../hooks/index.jsx";
-import routes from "../../routes.js";
-import loginImage from "../../../assets/image/loginPage.jpg";
-import * as Yup from "yup";
+  Card,
+} from 'react-bootstrap';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import * as Yup from 'yup';
+import useAuth from '../../hooks/index.jsx';
+import routes from '../../routes.js';
+import loginImage from '../../../assets/image/loginPage.jpg';
 
 const schema = Yup.object().shape({
-  name: Yup.string().required("Вы не ввели имя пользователя"),
-  password: Yup.string().required("Вы не ввели пароль"),
+  name: Yup.string().required('Вы не ввели имя пользователя'),
+  password: Yup.string().required('Вы не ввели пароль'),
 });
 
 const Login = (props) => {
@@ -30,8 +30,8 @@ const Login = (props) => {
   return (
     <Formik
       initialValues={{
-        name: "",
-        password: "",
+        name: '',
+        password: '',
       }}
       validationSchema={schema}
       onSubmit={async (values) => {
@@ -41,10 +41,10 @@ const Login = (props) => {
             username: values.name,
             password: values.password,
           });
-          localStorage.setItem("userId", JSON.stringify(res.data));
+          localStorage.setItem('userId', JSON.stringify(res.data));
           auth.logIn();
-          const { from } = location.state ||
-            state || { from: { pathname: "/" } };
+          const { from } = location.state
+            || state || { from: { pathname: '/' } };
           navigate(from);
         } catch (err) {
           if (err.isAxiosError && err.response.status === 401) {
@@ -55,7 +55,9 @@ const Login = (props) => {
         }
       }}
     >
-      {({ handleSubmit, handleChange, errors, values }) => (
+      {({
+        handleSubmit, handleChange, errors, values,
+      }) => (
         <Container fluid className="h-100">
           <div className="row justify-content-center align-content-center h-100">
             <div className="col-12 col-md-8 col-xxl-6">
@@ -107,7 +109,7 @@ const Login = (props) => {
                         />
                         <Form.Control.Feedback type="invalid">
                           {errors.password}
-                          {authFailed ? "Такого пользователя нет" : null}
+                          {authFailed ? 'Такого пользователя нет' : null}
                         </Form.Control.Feedback>
                       </FloatingLabel>
                     </Form.Group>
@@ -123,7 +125,9 @@ const Login = (props) => {
                 </Card.Body>
                 <Card.Footer>
                   <div className="text-center">
-                    Нет аккаунта? <Link to="/registration"> Регистрация </Link>
+                    Нет аккаунта?
+                    {' '}
+                    <Link to="/registration"> Регистрация </Link>
                   </div>
                 </Card.Footer>
               </Card>

@@ -1,39 +1,50 @@
-/* eslint-disable */
-
-import React from "react";
-import ReactDOM from "react-dom";
-import { Formik } from "formik";
-import { Form, Button, Container, Card, FloatingLabel } from "react-bootstrap";
-import { Link } from "react-router-dom";
-import * as Yup from "yup";
-import registrationImage from "../../../assets/image/registrationPage.jpg";
+/* eslint-disable arrow-body-style */
+/* eslint-disable react/function-component-definition */
+import React from 'react';
+import { Formik } from 'formik';
+import {
+  Form, Button, Container, Card, FloatingLabel,
+} from 'react-bootstrap';
+import * as Yup from 'yup';
+import registrationImage from '../../../assets/image/registrationPage.jpg';
 
 const schema = Yup.object().shape({
-  name: Yup.string().required('Вы не ввели имя пользователя').min(3, "Имя должно быть больше 3ех символов"),
+  name: Yup.string()
+    .required('Вы не ввели имя пользователя')
+    .min(3, 'Имя должно быть больше 3ех символов'),
   password: Yup.string().required('Вы не ввели пароль'),
   passwordConfirm: Yup.string()
     .required('Необходимо подтвердить пароль')
-    .oneOf([Yup.ref("password")], "Пароли должны совпадать"),
+    .oneOf([Yup.ref('password')], 'Пароли должны совпадать'),
 });
 
 const Registration = () => {
   return (
     <Formik
       initialValues={{
-        name: "",
-        password: "",
-        passwordConfirm: "",
+        name: '',
+        password: '',
+        passwordConfirm: '',
       }}
       validateOnBlur
       validationSchema={schema}
-      onSubmit={(values, { setSubmitting }) => {
+      onSubmit={(values) => {
         setTimeout(() => {
           alert(JSON.stringify(values, null, 2));
           // setSubmitting(false);
         }, 1500);
       }}
     >
-      {({ handleSubmit, handleChange, handleBlur, dirty, isValid, touched, errors, values }) => (
+      {({
+        handleSubmit,
+        handleChange,
+        handleBlur,
+        dirty,
+        isValid,
+        touched,
+        errors,
+        values,
+      }) => (
         <Container fluid className="h-100">
           <div className="row justify-content-center align-content-center h-100">
             <div className="col-12 col-md-8 col-xxl-6">
@@ -59,7 +70,7 @@ const Registration = () => {
                           value={values.name}
                           onBlur={handleBlur}
                           onChange={handleChange}
-                          isInvalid={!!errors.name}
+                          isInvalid={errors.name}
                           placeholder="username"
                         />
                         <Form.Control.Feedback type="invalid">
@@ -67,7 +78,6 @@ const Registration = () => {
                         </Form.Control.Feedback>
                       </FloatingLabel>
                     </Form.Group>
-
                     <Form.Group
                       controlId="validationFormikPassword"
                       className="mb-4"
@@ -82,7 +92,7 @@ const Registration = () => {
                           value={values.password}
                           onBlur={handleBlur}
                           onChange={handleChange}
-                          isInvalid={!!errors.password}
+                          isInvalid={errors.password}
                           placeholder="password"
                         />
                         <Form.Control.Feedback type="invalid">
@@ -90,7 +100,6 @@ const Registration = () => {
                         </Form.Control.Feedback>
                       </FloatingLabel>
                     </Form.Group>
-
                     <Form.Group
                       controlId="validationFormikPasswordConfirm"
                       className="mb-4"
@@ -105,7 +114,7 @@ const Registration = () => {
                           value={values.passwordConfirm}
                           onBlur={handleBlur}
                           onChange={handleChange}
-                          isInvalid={!!errors.passwordConfirm}
+                          isInvalid={errors.passwordConfirm}
                           placeholder="password"
                         />
                         <Form.Control.Feedback type="invalid">
@@ -113,7 +122,6 @@ const Registration = () => {
                         </Form.Control.Feedback>
                       </FloatingLabel>
                     </Form.Group>
-
                     <Button
                       type="submit"
                       className="w-100"
