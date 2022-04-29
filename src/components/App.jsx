@@ -1,6 +1,5 @@
 /* eslint-disable */
-import React from "react";
-import { useState } from "react";
+import React, { useState } from "react";
 import {
   BrowserRouter,
   Routes,
@@ -8,7 +7,7 @@ import {
   Navigate,
   useLocation,
 } from "react-router-dom";
-import { Navbar, Button } from "react-bootstrap";
+import { Navbar, Button, Container } from "react-bootstrap";
 import Login from "./Login/Login.jsx";
 import Page404 from "./404/Page404.jsx";
 import Registration from "./Registration/Registration.jsx";
@@ -21,9 +20,9 @@ const AuthProvider = ({ children }) => {
 
   const logIn = () => setLoggedIn(true);
   const logOut = () => {
-    localStorage.removeItem('userId')
+    localStorage.removeItem("userId");
     setLoggedIn(false);
-  }
+  };
 
   return (
     <AuthContext.Provider value={{ loggedIn, logIn, logOut }}>
@@ -45,33 +44,37 @@ const PrivateRoute = ({ children }) => {
 
 const LogOutButton = () => {
   const auth = useAuth();
-  return auth.loggedIn ? <Button onClick={auth.logOut}>Log out</Button> : null;
+  return auth.loggedIn ? <Button onClick={auth.logOut}>Выйти</Button> : null;
 };
 
 const App = () => {
   return (
-    <AuthProvider>
-      <BrowserRouter>
-        <Navbar variant="light" bg="light" expand="lg" className="shadow-sm">
-          <Navbar.Brand>Hexlet Chat</Navbar.Brand>
-          <LogOutButton />
-        </Navbar>
+    <div className="d-flex flex-column h-100">
+      <AuthProvider>
+        <BrowserRouter>
+          <Navbar variant="light" bg="light" expand="lg" className="shadow-sm">
+            <Container>
+              <Navbar.Brand>Hexlet Chat</Navbar.Brand>
+              <LogOutButton />
+            </Container>
+          </Navbar>
 
-        <Routes>
-          <Route path="/login" element={<Login />} />
-          <Route path="/registration" element={<Registration />} />
-          <Route path="*" element={<Page404 />} />
-          <Route
-            path="/"
-            element={
-              <PrivateRoute>
-                <Chat />
-              </PrivateRoute>
-            }
-          />
-        </Routes>
-      </BrowserRouter>
-    </AuthProvider>
+          <Routes>
+            <Route path="/login" element={<Login />} />
+            <Route path="/registration" element={<Registration />} />
+            <Route path="*" element={<Page404 />} />
+            <Route
+              path="/"
+              element={
+                <PrivateRoute>
+                  <Chat />
+                </PrivateRoute>
+              }
+            />
+          </Routes>
+        </BrowserRouter>
+      </AuthProvider>
+    </div>
   );
 };
 
