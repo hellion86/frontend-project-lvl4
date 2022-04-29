@@ -1,4 +1,5 @@
 /* eslint-disable */
+import regeneratorRuntime from "regenerator-runtime";
 import React, { useState } from "react";
 import {
   BrowserRouter,
@@ -6,6 +7,7 @@ import {
   Route,
   Navigate,
   useLocation,
+  Link,
 } from "react-router-dom";
 import { Navbar, Button, Container } from "react-bootstrap";
 import Login from "./Login/Login.jsx";
@@ -14,7 +16,7 @@ import Registration from "./Registration/Registration.jsx";
 import Chat from "./Chat/Chat.jsx";
 import AuthContext from "../contexts/index.jsx";
 import useAuth from "../hooks/index.jsx";
-
+import chatLogo from "../../assets/image/chatLogo.png";
 const AuthProvider = ({ children }) => {
   const [loggedIn, setLoggedIn] = useState(false);
 
@@ -52,9 +54,12 @@ const App = () => {
     <div className="d-flex flex-column h-100">
       <AuthProvider>
         <BrowserRouter>
-          <Navbar variant="light" bg="light" expand="lg" className="shadow-sm">
+          <Navbar variant="white" bg="light" expand="lg" className="shadow-sm">
             <Container>
-              <Navbar.Brand>Hexlet Chat</Navbar.Brand>
+              <Navbar.Brand>
+                <Link to="/">Hexlet Chat</Link>
+              </Navbar.Brand>
+
               <LogOutButton />
             </Container>
           </Navbar>

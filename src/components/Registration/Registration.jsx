@@ -3,15 +3,17 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import { Formik } from "formik";
-import { Form, Button, InputGroup, FloatingLabel } from "react-bootstrap";
+import { Form, Button, Container, Card, FloatingLabel } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import * as Yup from "yup";
+import registrationImage from "../../../assets/image/registrationPage.jpg";
 
 const schema = Yup.object().shape({
-  name: Yup.string().required().min(3, "Name must 3 or symbols"),
-  password: Yup.string().required().min(3, "Please enter  10 or more symbols"),
-  passwordConfirm: Yup.string().required().oneOf([Yup.ref('password')], 'Password must confirm')
- 
+  name: Yup.string().required('Вы не ввели имя пользователя').min(3, "Имя должно быть больше 3ех символов"),
+  password: Yup.string().required('Вы не ввели пароль'),
+  passwordConfirm: Yup.string()
+    .required('Необходимо подтвердить пароль')
+    .oneOf([Yup.ref("password")], "Пароли должны совпадать"),
 });
 
 const Registration = () => {
@@ -22,6 +24,7 @@ const Registration = () => {
         password: "",
         passwordConfirm: "",
       }}
+      validateOnBlur
       validationSchema={schema}
       onSubmit={(values, { setSubmitting }) => {
         setTimeout(() => {
@@ -30,95 +33,101 @@ const Registration = () => {
         }, 1500);
       }}
     >
-      {({
-        // isSubmitting,
-        handleSubmit,
-        handleChange,
-        touched,
-        errors,
-        values,
-      }) => (
-        <>
-          <h1 className="mb-4"> Регистрация </h1>
-          <Form noValidate onSubmit={handleSubmit}>
-            <Form.Group controlId="validationFormikUserName">
-              <InputGroup hasValidation>
-                <FloatingLabel
-                  controlId="floatingInputName"
-                  label="Имя пользователя"
-                  className="mb-3"
-                >
-                  <Form.Control
-                    type="text"
-                    name="name"
-                    value={values.name}
-                    onChange={handleChange}
-                    isValid={touched.name && !errors.name}
-                    isInvalid={!!errors.name}
-                    placeholder="username"
-                  />
-                  <Form.Control.Feedback type="invalid">
-                    {errors.name}
-                  </Form.Control.Feedback>
-                </FloatingLabel>
-              </InputGroup>
-            </Form.Group>
+      {({ handleSubmit, handleChange, handleBlur, dirty, isValid, touched, errors, values }) => (
+        <Container fluid className="h-100">
+          <div className="row justify-content-center align-content-center h-100">
+            <div className="col-12 col-md-8 col-xxl-6">
+              <Card className="shadow-sm">
+                <Card.Body className="row p-5">
+                  <div className="col-12 col-md-6 d-flex align-items-center justify-content-center">
+                    <Card.Img src={registrationImage} className="w-75" />
+                  </div>
+                  <Form
+                    onSubmit={handleSubmit}
+                    className="col-12 col-md-6 mt-3 mt-mb-0"
+                  >
+                    <h1 className="text-center mb-4"> Регистрация </h1>
+                    <Form.Group controlId="validationFormikUserName">
+                      <FloatingLabel
+                        controlId="floatingInputName"
+                        label="Имя пользователя"
+                        className="mb-4"
+                      >
+                        <Form.Control
+                          type="text"
+                          name="name"
+                          value={values.name}
+                          onBlur={handleBlur}
+                          onChange={handleChange}
+                          isInvalid={!!errors.name}
+                          placeholder="username"
+                        />
+                        <Form.Control.Feedback type="invalid">
+                          {touched.name && errors.name}
+                        </Form.Control.Feedback>
+                      </FloatingLabel>
+                    </Form.Group>
 
-            <Form.Group
-              md="4"
-              controlId="validationFormikPassword"
-              className="mb-3"
-            >
-              <InputGroup hasValidation>
-                <FloatingLabel
-                  controlId="floatingInputPassword"
-                  label="Пароль"
-                >
-                  <Form.Control
-                    type="password"
-                    name="password"
-                    value={values.password}
-                    onChange={handleChange}
-                    isValid={touched.password && !errors.password}
-                    isInvalid={!!errors.password}
-                    placeholder="password"
-                  />
-                  <Form.Control.Feedback type="invalid">
-                    {errors.password}
-                  </Form.Control.Feedback>
-                </FloatingLabel>
-              </InputGroup>
-            </Form.Group>
+                    <Form.Group
+                      controlId="validationFormikPassword"
+                      className="mb-4"
+                    >
+                      <FloatingLabel
+                        controlId="floatingInputPassword"
+                        label="Пароль"
+                      >
+                        <Form.Control
+                          type="password"
+                          name="password"
+                          value={values.password}
+                          onBlur={handleBlur}
+                          onChange={handleChange}
+                          isInvalid={!!errors.password}
+                          placeholder="password"
+                        />
+                        <Form.Control.Feedback type="invalid">
+                          {touched.password && errors.password}
+                        </Form.Control.Feedback>
+                      </FloatingLabel>
+                    </Form.Group>
 
-            <Form.Group
-              md="4"
-              controlId="validationFormikConfirmPassword"
-              className="mb-3"
-            >
-              <InputGroup hasValidation>
-                <FloatingLabel
-                  controlId="floatingInputConfirmPassword"
-                  label="Подтвердите пароль"
-                >
-                  <Form.Control
-                    type="password"
-                    name="passwordConfirm"
-                    value={values.passwordConfirm}
-                    onChange={handleChange}
-                    isValid={touched.passwordConfirm && !errors.passwordConfirm}
-                    isInvalid={!!errors.passwordConfirm}
-                    placeholder="passwordConfirm"
-                  />
-                  <Form.Control.Feedback type="invalid">
-                    {errors.password}
-                  </Form.Control.Feedback>
-                </FloatingLabel>
-              </InputGroup>
-            </Form.Group>
-          
-            <Button type="submit">Регистрация</Button>
-          </Form>
-        </>
+                    <Form.Group
+                      controlId="validationFormikPasswordConfirm"
+                      className="mb-4"
+                    >
+                      <FloatingLabel
+                        controlId="validationFormikPasswordConfirm"
+                        label="Подтвердите пароль"
+                      >
+                        <Form.Control
+                          type="password"
+                          name="passwordConfirm"
+                          value={values.passwordConfirm}
+                          onBlur={handleBlur}
+                          onChange={handleChange}
+                          isInvalid={!!errors.passwordConfirm}
+                          placeholder="password"
+                        />
+                        <Form.Control.Feedback type="invalid">
+                          {touched.passwordConfirm && errors.passwordConfirm}
+                        </Form.Control.Feedback>
+                      </FloatingLabel>
+                    </Form.Group>
+
+                    <Button
+                      type="submit"
+                      className="w-100"
+                      variant="outline-primary"
+                      disabled={!isValid && !dirty}
+                    >
+                      Зарегистрироваться
+                    </Button>
+                  </Form>
+                </Card.Body>
+              </Card>
+            </div>
+          </div>
+        </Container>
       )}
     </Formik>
   );
