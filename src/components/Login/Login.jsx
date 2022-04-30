@@ -26,7 +26,7 @@ const Login = (props) => {
   const navigate = useNavigate();
   const auth = useAuth();
   const { state } = props;
-  console.log(localStorage);
+  // console.log(localStorage);
   return (
     <Formik
       initialValues={{
@@ -123,7 +123,7 @@ const Login = (props) => {
                     </Button>
                   </Form>
                 </Card.Body>
-                <Card.Footer>
+                <Card.Footer className="p-3">
                   <div className="text-center">
                     Нет аккаунта?
                     {' '}
