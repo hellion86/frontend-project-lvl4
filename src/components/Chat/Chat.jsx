@@ -1,14 +1,19 @@
 /* eslint-disable */
 import React from 'react';
 import { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import { batch, useDispatch } from 'react-redux';
 import axios from 'axios';
+// import * as io from 'socket';
+// import {io} from 'socket-io.client';
+//  import * as socket from 'socket.io-client';
 import routes from '../../routes.js';
 import Channels from './Channels.jsx';
 import SendForm from './SendForm.jsx';
+import Messages from './Messages.jsx';
+
 
 import { actions as channelsAction } from '../../slices/channelsSlice.js';
-import { actions as messagesAction} from '../../slices/messagesSlice.js';
+import { actions as messagesAction } from '../../slices/messagesSlice.js';
 
 const getAuthHeader = () => {
   const userId = JSON.parse(localStorage.getItem('userId'));
@@ -20,14 +25,18 @@ const getAuthHeader = () => {
 
 const Chat = () => {
   const dispatch = useDispatch();
+  
 
   useEffect(() => {
     const fetch = async () => {
       const { data } = await axios.get(routes.getData(), {
         headers: getAuthHeader(),
       });
-      dispatch(channelsAction.addChannels(data.channels));
-			dispatch(messagesAction.addMessages(data.messages));
+      console.log(data.channels)
+      batch(() => {
+        dispatch(channelsAction.addChannels(data.channels));
+        dispatch(messagesAction.addMessages(data.messages));
+      });
     };
     fetch();
   }, []);
@@ -52,18 +61,19 @@ const Chat = () => {
             {/* шапка с активным каналом */}
             <div className="bg-light mb-4 p-3 shadow-sm small">
               <p className="m-0">
-                <b>#active ChannelName</b>
+                <b># general</b>
               </p>
             </div>
             {/* сам чат с выводом сообщений */}
-            <div
+            <Messages />
+            {/* <div
               id="messages-box"
               className="chat-messages overflow-auto px-5 "
             >
               <div className="text-break mb-2">
                 <b>UserExample</b>: textExample
               </div>
-            </div>
+            </div> */}
             <SendForm />
           </div>
         </div>

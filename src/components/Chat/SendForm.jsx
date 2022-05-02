@@ -1,12 +1,29 @@
 /* eslint-disable react/function-component-definition */
 import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { actions as messagesAction } from '../../slices/messagesSlice.js';
+import * as socket from 'socket.io-client';
 
 const SendForm = () => {
   const [message, setMessage] = useState('');
+  const s = socket.io();
+  const dispatch = useDispatch();
 
   const sendHandler = (text) => {
     setMessage(text.target.value);
   };
+
+  const buttonHit = (e) => {
+    e.preventDefault();
+    s.emit('newMessage', [message]);
+    setMessage('');
+    // console.log(e);
+  };
+
+  s.on('newMessage', (msg) => {
+    console.log(msg);
+    dispatch(messagesAction.addMessage(msg));
+  });
 
   return (
     <div className="mt-auto px-5 py-3">
@@ -20,7 +37,7 @@ const SendForm = () => {
             value={message}
             onChange={sendHandler}
           />
-          <button type="submit" disabled="" className="btn btn-primary">
+          <button type="submit" onClick={buttonHit} disabled="" className="btn btn-primary">
             {/* убрал отсюда svg */}
             <span>Отправить</span>
           </button>
