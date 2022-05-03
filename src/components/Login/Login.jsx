@@ -3,11 +3,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { Formik } from 'formik';
 import {
-  Form,
-  Button,
-  FloatingLabel,
-  Container,
-  Card,
+  Form, Button, FloatingLabel, Container, Card,
 } from 'react-bootstrap';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import * as Yup from 'yup';
@@ -26,7 +22,6 @@ const Login = (props) => {
   const navigate = useNavigate();
   const auth = useAuth();
   const { state } = props;
-  // console.log(localStorage);
   return (
     <Formik
       initialValues={{
@@ -43,8 +38,7 @@ const Login = (props) => {
           });
           localStorage.setItem('userId', JSON.stringify(res.data));
           auth.logIn();
-          const { from } = location.state
-            || state || { from: { pathname: '/' } };
+          const { from } = location.state || state || { from: { pathname: '/' } };
           navigate(from);
         } catch (err) {
           if (err.isAxiosError && err.response.status === 401) {
@@ -55,9 +49,11 @@ const Login = (props) => {
         }
       }}
     >
-      {({
-        handleSubmit, handleChange, errors, values,
-      }) => (
+      {(
+        {
+          handleSubmit, handleChange, errors, values,
+        },
+      ) => (
         <Container fluid className="h-100">
           <div className="row justify-content-center align-content-center h-100">
             <div className="col-12 col-md-8 col-xxl-6">
@@ -126,7 +122,6 @@ const Login = (props) => {
                 <Card.Footer className="p-3">
                   <div className="text-center">
                     Нет аккаунта?
-                    {' '}
                     <Link to="/registration"> Регистрация </Link>
                   </div>
                 </Card.Footer>

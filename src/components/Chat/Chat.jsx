@@ -10,6 +10,7 @@ import routes from '../../routes.js';
 import Channels from './Channels.jsx';
 import SendForm from './SendForm.jsx';
 import Messages from './Messages.jsx';
+// import useAuth from '../../hooks/index.jsx';
 
 
 import { actions as channelsAction } from '../../slices/channelsSlice.js';
@@ -25,17 +26,16 @@ const getAuthHeader = () => {
 
 const Chat = () => {
   const dispatch = useDispatch();
-  
 
   useEffect(() => {
     const fetch = async () => {
       const { data } = await axios.get(routes.getData(), {
         headers: getAuthHeader(),
       });
-      console.log(data.channels)
+      console.log( data)
       batch(() => {
         dispatch(channelsAction.addChannels(data.channels));
-        dispatch(messagesAction.addMessages(data.messages));
+        // dispatch(messagesAction.addMessages(data.messages));
       });
     };
     fetch();

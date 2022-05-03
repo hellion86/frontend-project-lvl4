@@ -1,48 +1,45 @@
+/* eslint-disable import/no-extraneous-dependencies */
 /* eslint-disable react/function-component-definition */
-import React, { useState } from 'react';
+import React from 'react';
 import { useDispatch } from 'react-redux';
-import { actions as messagesAction } from '../../slices/messagesSlice.js';
+import { Formik, Field, Form } from 'formik';
 import * as socket from 'socket.io-client';
+import { actions as messagesAction } from '../../slices/messagesSlice.js';
 
 const SendForm = () => {
-  const [message, setMessage] = useState('');
   const s = socket.io();
   const dispatch = useDispatch();
-
-  const sendHandler = (text) => {
-    setMessage(text.target.value);
-  };
-
-  const buttonHit = (e) => {
-    e.preventDefault();
-    s.emit('newMessage', [message]);
-    setMessage('');
-    // console.log(e);
-  };
-
+  const { username } = JSON.parse(localStorage.getItem('userId'));
   s.on('newMessage', (msg) => {
-    console.log(msg);
-    dispatch(messagesAction.addMessage(msg));
+    // console.log(msg);
+    // console.log(username);
+    const messageToStor = { ...msg, username };
+    dispatch(messagesAction.addMessage(messageToStor));
   });
 
   return (
     <div className="mt-auto px-5 py-3">
-      <form noValidate="" className="py-1 border rounded-2">
-        <div className="input-group has-validation">
-          <input
-            name="body"
-            aria-label="Новое сообщение"
-            placeholder="Введите сообщение..."
-            className="border-0 p-0 ps-2 form-control"
-            value={message}
-            onChange={sendHandler}
-          />
-          <button type="submit" onClick={buttonHit} disabled="" className="btn btn-primary">
-            {/* убрал отсюда svg */}
-            <span>Отправить</span>
-          </button>
-        </div>
-      </form>
+      <Formik
+        initialValues={{ textMessage: '' }}
+        onSubmit={(values, {resetForm}) => {
+          s.emit('newMessage', values);
+          resetForm({ values: '' });
+        }}
+      >
+        <Form className="py-1 border rounded-2">
+          <div className="input-group has-validation">
+            <Field
+              name="textMessage"
+              type="text"
+              className="border-0 p-0 ps-2 form-control"
+            />
+
+            <button type="submit" className="btn btn-primary">
+              Отправить
+            </button>
+          </div>
+        </Form>
+      </Formik>
     </div>
   );
 };
@@ -64,3 +61,25 @@ export default SendForm;
 // 0 1 0-.708.708L10.293 7.5H4.5z"
 // ></path>
 // </svg>
+
+//  <form noValidate="" className="py-1 border rounded-2">
+//         <div className="input-group has-validation">
+//           <input
+//             name="body"
+//             aria-label="Новое сообщение"
+//             placeholder="Введите сообщение..."
+//             className="border-0 p-0 ps-2 form-control"
+//             value={message}
+//             onChange={sendHandler}
+//           />
+//           <button
+//             type="submit"
+//             onClick={buttonHit}
+//             disabled=""
+//             className="btn btn-primary"
+//           >
+//             {/* убрал отсюда svg */}
+//             <span>Отправить</span>
+//           </button>
+//         </div>
+//       </form>
