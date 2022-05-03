@@ -1,6 +1,6 @@
 /* eslint-disable import/no-extraneous-dependencies */
 /* eslint-disable react/function-component-definition */
-import React from 'react';
+import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { Formik, Field, Form } from 'formik';
 import * as socket from 'socket.io-client';
@@ -9,10 +9,9 @@ import { actions as messagesAction } from '../../slices/messagesSlice.js';
 const SendForm = () => {
   const s = socket.io();
   const dispatch = useDispatch();
+  const [messageSent, setMesssageSent] = useState(false);
   const { username } = JSON.parse(localStorage.getItem('userId'));
   s.on('newMessage', (msg) => {
-    // console.log(msg);
-    // console.log(username);
     const messageToStor = { ...msg, username };
     dispatch(messagesAction.addMessage(messageToStor));
   });
@@ -21,25 +20,35 @@ const SendForm = () => {
     <div className="mt-auto px-5 py-3">
       <Formik
         initialValues={{ textMessage: '' }}
-        onSubmit={(values, {resetForm}) => {
-          s.emit('newMessage', values);
-          resetForm({ values: '' });
+        onSubmit={(values, actions) => {
+          s.emit('newMessage', values, (response) => {
+            if (response.status !== 'ok') {
+              setMesssageSent(true);
+            } else {
+              setMesssageSent(false);
+              actions.resetForm({ values: '' });
+            }
+          });
         }}
       >
         <Form className="py-1 border rounded-2">
           <div className="input-group has-validation">
+            {/* // {errors.textMessage  ? <div>{errors.textMessage}</div> : null} */}
             <Field
               name="textMessage"
               type="text"
               className="border-0 p-0 ps-2 form-control"
             />
 
-            <button type="submit" className="btn btn-primary">
+            <button type="submit" className="btn btn-primary m-2 rounded-2">
               Отправить
             </button>
           </div>
         </Form>
       </Formik>
+      {messageSent ? (
+        <div>Не удалось отправить сообщение, повторите попытку позже...</div>
+      ) : null}
     </div>
   );
 };

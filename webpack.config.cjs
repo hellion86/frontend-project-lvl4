@@ -24,6 +24,7 @@ module.exports = {
   plugins: [
     new MiniCssExtractPlugin(),
   ],
+  devtool: 'eval-source-map',
   module: {
     rules: [
       {

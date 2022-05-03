@@ -3,14 +3,11 @@ import React from 'react';
 import { useEffect } from 'react';
 import { batch, useDispatch } from 'react-redux';
 import axios from 'axios';
-// import * as io from 'socket';
-// import {io} from 'socket-io.client';
-//  import * as socket from 'socket.io-client';
 import routes from '../../routes.js';
 import Channels from './Channels.jsx';
 import SendForm from './SendForm.jsx';
 import Messages from './Messages.jsx';
-// import useAuth from '../../hooks/index.jsx';
+ 
 
 
 import { actions as channelsAction } from '../../slices/channelsSlice.js';
@@ -26,7 +23,7 @@ const getAuthHeader = () => {
 
 const Chat = () => {
   const dispatch = useDispatch();
-
+  console.log(JSON.parse(localStorage.getItem('userId')));
   useEffect(() => {
     const fetch = async () => {
       const { data } = await axios.get(routes.getData(), {
@@ -35,7 +32,7 @@ const Chat = () => {
       console.log( data)
       batch(() => {
         dispatch(channelsAction.addChannels(data.channels));
-        // dispatch(messagesAction.addMessages(data.messages));
+       // dispatch(messagesAction.addMessages(data.messages));
       });
     };
     fetch();
