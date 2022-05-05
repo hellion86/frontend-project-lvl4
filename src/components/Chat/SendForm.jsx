@@ -3,17 +3,14 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { Formik, Field, Form } from 'formik';
-import * as socket from 'socket.io-client';
-import { actions as messagesAction } from '../../slices/messagesSlice.js';
 
-const SendForm = () => {
-  const s = socket.io();
+// import { actions as messagesAction } from '../../slices/messagesSlice.js';
+
+const SendForm = ({ messagesAction, username, socket, currentChannelId }) => {
   const dispatch = useDispatch();
   const [messageSent, setMesssageSent] = useState(false);
-  const { username } = JSON.parse(localStorage.getItem('userId'));
-  s.on('newMessage', (msg) => {
-    const messageToStor = { ...msg, username };
-    dispatch(messagesAction.addMessage(messageToStor));
+  socket.on('newMessage', (msg) => {
+    dispatch(messagesAction.addMessage(msg));
   });
 
   return (
@@ -21,14 +18,18 @@ const SendForm = () => {
       <Formik
         initialValues={{ textMessage: '' }}
         onSubmit={(values, actions) => {
-          s.emit('newMessage', values, (response) => {
-            if (response.status !== 'ok') {
-              setMesssageSent(true);
-            } else {
-              setMesssageSent(false);
-              actions.resetForm({ values: '' });
-            }
-          });
+          socket.emit(
+            'newMessage',
+            { ...values, author: username, channelId: currentChannelId },
+            (response) => {
+              if (response.status !== 'ok') {
+                setMesssageSent(true);
+              } else {
+                setMesssageSent(false);
+                actions.resetForm({ values: '' });
+              }
+            },
+          );
         }}
       >
         <Form className="py-1 border rounded-2">

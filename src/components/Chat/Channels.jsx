@@ -1,13 +1,10 @@
 /* eslint-disable react/function-component-definition */
 import React from 'react';
-import { useSelector } from 'react-redux';
-import { selectors as channelsSelector } from '../../slices/channelsSlice.js';
 
-const Channels = () => {
-  const channelsList = useSelector(channelsSelector.selectAll);
-  const defaultChannel = {
-    general: 'w-100 rounded-0 text-start btn btn-secondary',
-    other: 'w-100 rounded-0 text-start btn',
+const Channels = ({ channelsList, currentChannel }) => {
+  const channelActive = {
+    active: 'w-100 rounded-0 text-start btn btn-secondary',
+    none: 'w-100 rounded-0 text-start btn',
   };
 
   return (
@@ -16,7 +13,11 @@ const Channels = () => {
         <li key={channel.id} className="nav-item w-100">
           <button
             type="button"
-            className={channel.name === 'general' ? defaultChannel.general : defaultChannel.other}
+            className={
+              channel.id === currentChannel
+                ? channelActive.active
+                : channelActive.none
+            }
           >
             <span className="me-1">#</span>
             {channel.name}
