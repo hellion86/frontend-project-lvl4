@@ -27,8 +27,8 @@ const getAuthHeader = () => {
 const Chat = () => {
   const dispatch = useDispatch();
   const { username } = JSON.parse(localStorage.getItem('userId'));
-  const [currentChannelId, setCurrentChannelId] = useState('');
-  const [currentChannelName, setCurrentChannelName] = useState('');
+  const [currentChannelId, setCurrentChannelId] = useState('1');
+  const [currentChannelName, setCurrentChannelName] = useState('general');
   const socket = io();
 
   useEffect(() => {
@@ -36,7 +36,7 @@ const Chat = () => {
       const { data } = await axios.get(routes.getData(), {
         headers: getAuthHeader(),
       });
-      console.log(data);
+      //console.log(data);
       setCurrentChannelId(data.currentChannelId);
       const [currentChannelName] = data.channels.filter(
         (channel) => channel.id === data.currentChannelId
@@ -52,13 +52,7 @@ const Chat = () => {
   const messagesList = useSelector(messageSelector.selectAll);
   //console.log(setCurrentChannelId)
  
-  const addChannel = () => {
-    socket.emit('newChannel', ['test'])
-    socket.on('newChannel', (msg) => {
-      console.log(msg)
-    })
-  }
- 
+   
 
   return (
     <div className="container h-100 my-4 overflow-hidden rounded shadow">
@@ -69,7 +63,7 @@ const Chat = () => {
             <button
               type="button"
               className="p-0 text-primary btn btn-group-vertical"
-              onClick={addChannel}
+               
             >
               <span>+</span>
             </button>
@@ -77,12 +71,14 @@ const Chat = () => {
           <Channels
             channelsList={channelsList}
             currentChannel={currentChannelId}
+            setCurrentChannelId={setCurrentChannelId} 
+            setCurrentChannelName= {setCurrentChannelName}
           />
         </div>
         <div className="col p-0 h-100">
           <div className="d-flex flex-column h-100">
             <CurrentChannel currentChannelName={currentChannelName} />
-            <Messages messagesList={messagesList} />
+            <Messages messagesList={messagesList} currentChannelId={currentChannelId}/>
             <SendForm
               socket={socket}
               username={username}
