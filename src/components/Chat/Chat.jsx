@@ -1,7 +1,7 @@
 /* eslint-disable */
 import React, { useState } from 'react';
 import { useEffect } from 'react';
-import { batch, useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import axios from 'axios';
 import io from 'socket.io-client';
 import routes from '../../routes.js';
@@ -36,7 +36,7 @@ const Chat = () => {
       const { data } = await axios.get(routes.getData(), {
         headers: getAuthHeader(),
       });
-      //console.log(data);
+      console.log(data);
       setCurrentChannelId(data.currentChannelId);
       const [currentChannelName] = data.channels.filter(
         (channel) => channel.id === data.currentChannelId
@@ -52,6 +52,12 @@ const Chat = () => {
   const messagesList = useSelector(messageSelector.selectAll);
   //console.log(setCurrentChannelId)
  
+  const addChannel = () => {
+    socket.emit('newChannel', ['test'])
+    socket.on('newChannel', (msg) => {
+      console.log(msg)
+    })
+  }
  
 
   return (
@@ -63,6 +69,7 @@ const Chat = () => {
             <button
               type="button"
               className="p-0 text-primary btn btn-group-vertical"
+              onClick={addChannel}
             >
               <span>+</span>
             </button>

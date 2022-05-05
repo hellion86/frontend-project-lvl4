@@ -25,7 +25,7 @@ const AuthProvider = ({ children }) => {
   const [loggedIn, setLoggedIn] = useState(au);
   const logIn = () => setLoggedIn(true);
   const logOut = () => {
-   // console.log(au);
+    // console.log(au);
     localStorage.removeItem('userId');
     setLoggedIn(false);
   };
