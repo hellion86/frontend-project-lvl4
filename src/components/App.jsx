@@ -57,11 +57,9 @@ const App = () => (
   <div className="d-flex flex-column h-100">
     <AuthProvider>
       <BrowserRouter>
-        <Navbar variant="white" bg="light" expand="lg" className="shadow-sm">
+        <Navbar bg="light" expand="lg" className="shadow-sm">
           <Container>
-            <Navbar.Brand>
-              <Link to="/">Hexlet Chat</Link>
-            </Navbar.Brand>
+            <Navbar.Brand href="/">Hexlet Chat</Navbar.Brand>
             <LogOutButton />
           </Container>
         </Navbar>
