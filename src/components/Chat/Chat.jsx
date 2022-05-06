@@ -34,7 +34,7 @@ const Chat = () => {
   const socket = io();
 
   useEffect(() => {
-    console.log('useEffect work!');
+    // console.log('useEffect work!');
     const fetch = async () => {
       const { data } = await axios.get(routes.getData(), {
         headers: getAuthHeader(),

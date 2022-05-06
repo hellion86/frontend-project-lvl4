@@ -10,7 +10,6 @@ import {
   Route,
   Navigate,
   useLocation,
-  Link,
 } from 'react-router-dom';
 import { Navbar, Button, Container } from 'react-bootstrap';
 import Login from './Login/Login.jsx';
@@ -25,7 +24,6 @@ const AuthProvider = ({ children }) => {
   const [loggedIn, setLoggedIn] = useState(au);
   const logIn = () => setLoggedIn(true);
   const logOut = () => {
-    // console.log(au);
     localStorage.removeItem('userId');
     setLoggedIn(false);
   };

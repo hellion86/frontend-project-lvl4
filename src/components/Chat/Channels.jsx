@@ -8,12 +8,12 @@ const Channels = ({
   setCurrentChannelId,
   setCurrentChannelName,
 }) => {
-  console.log(channelsList);
+  // console.log(channelsList);
   const active = (id) => (id === currentChannel ? 'secondary' : '');
   const toggleChannel = (e) => {
     const activeChannelName = e.target.outerText.split('#')[1];
     const [activeChannel] = channelsList.filter(
-      (channel) => channel.name === activeChannelName
+      (channel) => channel.name === activeChannelName,
     );
     setCurrentChannelId(activeChannel.id);
     setCurrentChannelName(activeChannelName);
