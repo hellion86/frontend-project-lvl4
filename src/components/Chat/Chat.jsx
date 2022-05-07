@@ -26,6 +26,7 @@ const Chat = () => {
   const { username } = JSON.parse(localStorage.getItem('userId'));
   const [currentChannelId, setCurrentChannelId] = useState(1);
   const [currentChannelName, setCurrentChannelName] = useState('general');
+  const [currentChannel, setCurrentChannel] = useState({id: 1, name: 'general'});
   const socket = io();
 
   useEffect(() => {

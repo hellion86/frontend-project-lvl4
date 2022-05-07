@@ -9,22 +9,15 @@ const Channels = ({
   setCurrentChannelId,
   setCurrentChannelName,
 }) => {
-  const [showRemove, setShowRemove] = useState(false);
-  const [showRename, setShowRename] = useState(false);
-  const handleCloseRemove = () => setShowRemove(false);
-  const handleShowRemove = () => setShowRemove(true);
-  const handleCloseRename = () => setShowRename(false);
-  const handleShowRename = () => setShowRename(true);
-
-  // console.log(channelsList);
+  const [modal, setModal] = useState({ show: false, id: '', type: '' });
+  const handleShow = (id, type) => {
+    setModal({ show: true, id, type });
+  };
+  const handleClose = () => setModal({ show: false, id: '', type: '' });
   const active = (id) => (id === currentChannel ? 'secondary' : '');
-  const toggleChannel = (e) => {
-    const activeChannelName = e.target.outerText.split('#')[1];
-    const [activeChannel] = channelsList.filter(
-      (channel) => channel.name === activeChannelName
-    );
-    setCurrentChannelId(activeChannel.id);
-    setCurrentChannelName(activeChannelName);
+  const toggleChannel = (id, name) => {
+    setCurrentChannelId(id);
+    setCurrentChannelName(name);
   };
 
   return (
@@ -36,7 +29,7 @@ const Channels = ({
               <Button
                 variant={active(channel.id)}
                 className="w-100 rounded-0 text-start text-truncate"
-                onClick={toggleChannel}
+                onClick={() => toggleChannel(channel.id, channel.name)}
               >
                 <span className="me-1">#</span>
                 {channel.name}
@@ -51,10 +44,14 @@ const Channels = ({
                     id="dropdown-split-basic"
                   />
                   <Dropdown.Menu>
-                    <Dropdown.Item onClick={handleShowRemove}>
+                    <Dropdown.Item
+                      onClick={() => handleShow(channel.id, 'remove')}
+                    >
                       Удалить
                     </Dropdown.Item>
-                    <Dropdown.Item onClick={handleShowRename}>
+                    <Dropdown.Item
+                      onClick={() => handleShow(channel.id, 'rename')}
+                    >
                       Переименовать
                     </Dropdown.Item>
                   </Dropdown.Menu>
@@ -65,14 +62,10 @@ const Channels = ({
         ))}
       </ul>
       <ChannelsModal
-        show={showRemove}
-        handleClose={handleCloseRemove}
-        type="remove"
-      />
-      <ChannelsModal
-        show={showRename}
-        handleClose={handleCloseRename}
-        type="rename"
+        handleClose={handleClose}
+        show={modal.show}
+        type={modal.type}
+        channelId={modal.id}
       />
     </>
   );

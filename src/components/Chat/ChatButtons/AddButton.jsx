@@ -6,7 +6,10 @@ const AddButton = ({ channelsList }) => {
   const [show, setShow] = useState(false);
 
   const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
+  const handleShow = (e) => {
+    console.log(e)
+    setShow(true);
+  }
 
   return (
     <div className="d-flex justify-content-between mb-2 ps-4 pe-2">
@@ -39,7 +42,7 @@ const AddButton = ({ channelsList }) => {
           </svg>
         </span>
       </button>
-      <ChannelsModal show={show} handleClose={handleClose} channelsList={channelsList} type="add"/>
+      <ChannelsModal show={show} handleClose={handleClose} channelsList={channelsList} type="add" />
     </div>
   );
 };

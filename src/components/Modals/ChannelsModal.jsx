@@ -7,7 +7,7 @@ import { Modal, Form, Button } from 'react-bootstrap';
 import * as Yup from 'yup';
 
 const ChannelsModal = (props) => {
-  const { type, show, handleClose, channelsList } = props;
+  const { type, show, handleClose, channelId, channelsList } = props;
   const schema = Yup.object().shape({
     channelName: Yup.string()
       .required('Вы не ввели имя канала')
