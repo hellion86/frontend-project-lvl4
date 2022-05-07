@@ -1,85 +1,117 @@
-/* eslint-disable object-curly-newline */
+/* eslint-disable consistent-return */
 /* eslint-disable functional/no-let */
 /* eslint-disable react/function-component-definition */
 import { Formik } from 'formik';
 import React from 'react';
+import { useDispatch } from 'react-redux';
 import { Modal, Form, Button } from 'react-bootstrap';
 import * as Yup from 'yup';
 
 const ChannelsModal = (props) => {
-  const { type, show, handleClose, channelId, channelsList } = props;
+  const {
+    type,
+    show,
+    handleClose,
+    channelId,
+    channelsList,
+    socket,
+    channelsAction,
+  } = props;
+  const dispatch = useDispatch();
   const schema = Yup.object().shape({
     channelName: Yup.string()
       .required('Вы не ввели имя канала')
       .min(3, 'Имя канала не может быть меньше 3ех символов')
       .max(20, 'Имя канала не может быть больше 20 символов')
-      .notOneOf([channelsList], 'Данное имя уже занято'),
+      .notOneOf(
+        [channelsList.map((channel) => channel.name)],
+        'Данное имя уже занято',
+      ),
+  });
+  socket.on('newChannel', (msg) => {
+    dispatch(channelsAction.addChannel(msg));
   });
 
-  let action = '';
   let buttonText = '';
   let headerText = '';
+  let placeHolderText = '';
+  let buttonClass = '';
   switch (type) {
     case 'add':
-      action = (
-        <Modal.Body>
-          <Form>
-            <Form.Group controlId="channelAddForm.ControlInput">
-              <Form.Control type="text" placeholder="" autoFocus />
-            </Form.Group>
-          </Form>
-        </Modal.Body>
-      );
+      placeHolderText = 'Введите имя нового канала';
       headerText = 'Создать канал';
       buttonText = 'Отправить';
-      break;
-    case 'remove':
-      action = <Modal.Body>Уверены?</Modal.Body>;
-      headerText = 'Удалить канал';
-      buttonText = 'Удалить';
+      buttonClass = 'primary';
       break;
     case 'rename':
-      action = (
-        <Modal.Body>
-          <Form>
-            <Form.Group controlId="channelRenameForm.ControlInput">
-              <Form.Control
-                type="text"
-                placeholder="Введите новое имя канала..."
-                autoFocus
-              />
-            </Form.Group>
-          </Form>
-        </Modal.Body>
-      );
+      placeHolderText = 'Введите новое имя канала...';
       headerText = 'Переименовать канал';
       buttonText = 'Отправить';
+      buttonClass = 'primary';
+      break;
+    case 'remove':
+      headerText = 'Удалить канал';
+      buttonText = 'Удалить';
+      buttonClass = 'danger';
       break;
     default:
-      return '';
+      return;
   }
+
   return (
     <Formik
       initialValues={{
-        channelName: 'ssss',
+        channelName: '',
+        action: type,
+        placeHolderText,
+        headerText,
+        buttonText,
+        buttonClass,
       }}
       validationSchema={schema}
       onSubmit={(values) => {
-        console.log(values);
+        switch (values.type) {
+          case 'add':
+            socket.emit('newChannel', { name: values.channelName });
+            break;
+          default:
+            break;
+        }
       }}
     >
-      {({ handleSubmit, values }) => (
+      {({
+        handleSubmit, handleChange, errors, values,
+      }) => (
         <Modal show={show} onHide={handleClose} centered>
           <Modal.Header closeButton>
-            <Modal.Title>{headerText}</Modal.Title>
+            <Modal.Title>{values.headerText}</Modal.Title>
           </Modal.Header>
-          {action}
+          <Modal.Body>
+            {values.action !== 'remove' ? (
+              <Form onSubmit={handleSubmit}>
+                <Form.Group controlId="channelAddForm.ControlInput">
+                  <Form.Control
+                    type="text"
+                    placeholder={values.placeHolderText}
+                    name="channelName"
+                    onChange={handleChange}
+                    value={values.channelName}
+                    isInvalid={errors.channelName}
+                    autoFocus
+                  />
+                </Form.Group>
+                {errors.channelName}
+              </Form>
+            ) : (
+              'Уверены?'
+            )}
+          </Modal.Body>
           <Modal.Footer>
             <Button variant="secondary" onClick={handleClose}>
               Отменить
             </Button>
-            <Button variant="primary" onClick={handleSubmit}>
-              {buttonText}
+            <Button variant={values.buttonClass} onClick={handleSubmit}>
+              {values.buttonText}
             </Button>
           </Modal.Footer>
         </Modal>

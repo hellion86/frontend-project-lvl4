@@ -3,7 +3,9 @@ import React, { useState } from 'react';
 import { Dropdown, Button, ButtonGroup } from 'react-bootstrap';
 import ChannelsModal from '../Modals/ChannelsModal.jsx';
 
-const Channels = ({ channelsList, currentChannel, setCurrentChannel }) => {
+const Channels = ({
+  channelsList, currentChannel, setCurrentChannel, socket, channelsAction,
+}) => {
   const [modal, setModal] = useState({ show: false, id: '', type: '' });
   const handleShow = (id, type) => setModal({ show: true, id, type });
   const handleClose = () => setModal({ show: false, id: '', type: '' });
@@ -87,6 +89,9 @@ const Channels = ({ channelsList, currentChannel, setCurrentChannel }) => {
         show={modal.show}
         type={modal.type}
         channelId={modal.id}
+        channelsList={channelsList}
+        channelsAction={channelsAction}
+        socket={socket}
       />
     </div>
   );

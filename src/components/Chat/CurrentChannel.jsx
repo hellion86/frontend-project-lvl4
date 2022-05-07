@@ -7,6 +7,7 @@ const CurrentChannel = ({ currentChannelName, messageNumber }) => (
     <p className="m-0">
       <b>
         #
+        {' '}
         {currentChannelName}
       </b>
     </p>

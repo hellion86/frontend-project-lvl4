@@ -58,6 +58,8 @@ const Chat = () => {
           channelsList={channelsList}
           currentChannel={currentChannel}
           setCurrentChannel={setCurrentChannel}
+          channelsAction={channelsAction}
+          socket={socket}
         />
         <div className="col p-0 h-100">
           <div className="d-flex flex-column h-100">
