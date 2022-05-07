@@ -29,7 +29,7 @@ const SendForm = ({ messagesAction, username, socket, currentChannelId }) => {
                 setMesssageSent(false);
                 actions.resetForm({ values: '' });
               }
-            }
+            },
           );
         }}
       >

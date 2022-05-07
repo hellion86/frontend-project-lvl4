@@ -1,8 +1,8 @@
 /* eslint-disable react/function-component-definition */
 import React, { useState } from 'react';
-import { Modal, Form, Button } from 'react-bootstrap';
+import ChannelsModal from '../../Modals/ChannelsModal.jsx';
 
-const AddButton = () => {
+const AddButton = ({ channelsList }) => {
   const [show, setShow] = useState(false);
 
   const handleClose = () => setShow(false);
@@ -39,30 +39,7 @@ const AddButton = () => {
           </svg>
         </span>
       </button>
-      <Modal show={show} onHide={handleClose} centered>
-        <Modal.Header closeButton>
-          <Modal.Title>Добавить канал</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <Form>
-            <Form.Group controlId="channelForm.ControlInput">
-              <Form.Control
-                type="text"
-                placeholder=""
-                autoFocus
-              />
-            </Form.Group>
-          </Form>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>
-            Закрыть
-          </Button>
-          <Button variant="primary" onClick={handleClose}>
-            Сохранить
-          </Button>
-        </Modal.Footer>
-      </Modal>
+      <ChannelsModal show={show} handleClose={handleClose} channelsList={channelsList} type="add"/>
     </div>
   );
 };

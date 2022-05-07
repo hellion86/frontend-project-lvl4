@@ -1,22 +1,17 @@
 /* eslint-disable */
-import React, { useState } from 'react';
-import { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import axios from 'axios';
 import io from 'socket.io-client';
-import useAuth from '../../hooks/index.jsx';
 import routes from '../../routes.js';
 import Channels from './Channels.jsx';
 import SendForm from './SendForm.jsx';
 import Messages from './Messages.jsx';
+import CurrentChannel from './CurrentChannel.jsx';
 import AddButton from './ChatButtons/AddButton.jsx';
 
-import { selectors as channelsSelector } from '../../slices/channelsSlice.js';
-import { selectors as messageSelector } from '../../slices/messagesSlice.js';
-
-import { actions as channelsAction } from '../../slices/channelsSlice.js';
-import { actions as messagesAction } from '../../slices/messagesSlice.js';
-import CurrentChannel from './CurrentChannel.jsx';
+import { selectors as channelsSelector, actions as channelsAction } from '../../slices/channelsSlice.js';
+import { selectors as messageSelector, actions as messagesAction} from '../../slices/messagesSlice.js';
 
 const getAuthHeader = () => {
   const userId = JSON.parse(localStorage.getItem('userId'));
@@ -54,7 +49,7 @@ const Chat = () => {
     <div className="container h-100 my-4 overflow-hidden rounded shadow">
       <div className="row h-100 bg-white flex-md-row">
         <div className="col-4 col-md-2 border-end pt-5 px-0 bg-light">
-          <AddButton />
+          <AddButton channelsList={channelsList} />
           <Channels
             channelsList={channelsList}
             currentChannel={currentChannelId}

@@ -12,6 +12,7 @@ const CurrentChannel = ({ currentChannelName, messageNumber }) => (
     </p>
     <Badge bg="secondary">
       {messageNumber}
+      {' '}
       сообщений
     </Badge>
   </div>
