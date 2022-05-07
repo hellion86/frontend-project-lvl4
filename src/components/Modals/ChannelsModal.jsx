@@ -25,7 +25,7 @@ const ChannelsModal = (props) => {
       .max(20, 'Имя канала не может быть больше 20 символов')
       .notOneOf(
         [channelsList.map((channel) => channel.name)],
-        'Данное имя уже занято',
+        'Данное имя уже занято'
       ),
   });
   socket.on('newChannel', (msg) => {
@@ -69,19 +69,19 @@ const ChannelsModal = (props) => {
         buttonClass,
       }}
       validationSchema={schema}
-      onSubmit={(values) => {
-        switch (values.type) {
-          case 'add':
+      onSubmit={(values, actions) => {
+        // switch (values.type) {
+        //   case 'add':
             socket.emit('newChannel', { name: values.channelName });
-            break;
-          default:
-            break;
-        }
+            actions.resetForm({ values: '' });
+            handleClose();
+          //   break;
+          // default:
+          //   break;
+        //}
       }}
     >
-      {({
-        handleSubmit, handleChange, errors, values,
-      }) => (
+      {({ handleSubmit, handleChange, errors, values }) => (
         <Modal show={show} onHide={handleClose} centered>
           <Modal.Header closeButton>
             <Modal.Title>{values.headerText}</Modal.Title>
@@ -110,7 +110,11 @@ const ChannelsModal = (props) => {
             <Button variant="secondary" onClick={handleClose}>
               Отменить
             </Button>
-            <Button variant={values.buttonClass} onClick={handleSubmit}>
+            <Button
+              variant={values.buttonClass}
+              type="submit"
+              onClick={handleSubmit}
+            >
               {values.buttonText}
             </Button>
           </Modal.Footer>
