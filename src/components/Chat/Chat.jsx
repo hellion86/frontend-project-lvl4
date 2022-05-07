@@ -8,10 +8,15 @@ import Channels from './Channels.jsx';
 import SendForm from './SendForm.jsx';
 import Messages from './Messages.jsx';
 import CurrentChannel from './CurrentChannel.jsx';
-import AddButton from './ChatButtons/AddButton.jsx';
 
-import { selectors as channelsSelector, actions as channelsAction } from '../../slices/channelsSlice.js';
-import { selectors as messageSelector, actions as messagesAction} from '../../slices/messagesSlice.js';
+import {
+  selectors as channelsSelector,
+  actions as channelsAction,
+} from '../../slices/channelsSlice.js';
+import {
+  selectors as messageSelector,
+  actions as messagesAction,
+} from '../../slices/messagesSlice.js';
 
 const getAuthHeader = () => {
   const userId = JSON.parse(localStorage.getItem('userId'));
@@ -24,13 +29,12 @@ const getAuthHeader = () => {
 const Chat = () => {
   const dispatch = useDispatch();
   const { username } = JSON.parse(localStorage.getItem('userId'));
-  const [currentChannelId, setCurrentChannelId] = useState(1);
-  const [currentChannelName, setCurrentChannelName] = useState('general');
-  const [currentChannel, setCurrentChannel] = useState({id: 1, name: 'general'});
+  const [currentChannel, setCurrentChannel] = useState({
+    id: 1,
+    name: 'general',
+  });
   const socket = io();
-
   useEffect(() => {
-    // console.log('useEffect work!');
     const fetch = async () => {
       const { data } = await axios.get(routes.getData(), {
         headers: getAuthHeader(),
@@ -43,36 +47,33 @@ const Chat = () => {
 
   const channelsList = useSelector(channelsSelector.selectAll);
   const messagesList = useSelector(messageSelector.selectAll);
-  const messageNumber = messagesList.filter((message) => message.channelId === currentChannelId);
-  
+  const messageNumber = messagesList.filter(
+    (message) => message.channelId === currentChannel.id
+  );
 
   return (
     <div className="container h-100 my-4 overflow-hidden rounded shadow">
       <div className="row h-100 bg-white flex-md-row">
-        <div className="col-4 col-md-2 border-end pt-5 px-0 bg-light">
-          <AddButton channelsList={channelsList} />
-          <Channels
-            channelsList={channelsList}
-            currentChannel={currentChannelId}
-            setCurrentChannelId={setCurrentChannelId}
-            setCurrentChannelName={setCurrentChannelName}
-          />
-        </div>
+        <Channels
+          channelsList={channelsList}
+          currentChannel={currentChannel}
+          setCurrentChannel={setCurrentChannel}
+        />
         <div className="col p-0 h-100">
           <div className="d-flex flex-column h-100">
             <CurrentChannel
-              currentChannelName={currentChannelName}
+              currentChannelName={currentChannel.name}
               messageNumber={messageNumber.length}
             />
             <Messages
               messagesList={messagesList}
-              currentChannelId={currentChannelId}
+              currentChannelId={currentChannel.id}
             />
             <SendForm
               socket={socket}
               username={username}
               messagesAction={messagesAction}
-              currentChannelId={currentChannelId}
+              currentChannelId={currentChannel.id}
             />
           </div>
         </div>
