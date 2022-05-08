@@ -4,11 +4,15 @@ import { Dropdown, Button, ButtonGroup } from 'react-bootstrap';
 import ChannelsModal from '../Modals/ChannelsModal.jsx';
 
 const Channels = ({
-  channelsList, currentChannel, setCurrentChannel, socket, channelsAction,
+  channelsList,
+  currentChannel,
+  setCurrentChannel,
+  socket,
+  channelsAction,
 }) => {
-  const [modal, setModal] = useState({ show: false, id: '', type: '' });
-  const handleShow = (id, type) => setModal({ show: true, id, type });
-  const handleClose = () => setModal({ show: false, id: '', type: '' });
+  const [modal, setModal] = useState({ show: false, id: '', type: '', channelName: ''});
+  const handleShow = (id, type, name) => setModal({ show: true, id, type, channelName: name });
+  const handleClose = () => setModal({ show: false, id: '', type: '' , channelName: ''});
   const active = (id) => (id === currentChannel.id ? 'secondary' : '');
   const toggleChannel = (id, name) => setCurrentChannel({ id, name });
 
@@ -19,7 +23,7 @@ const Channels = ({
         <button
           type="button"
           className="p-0 text-primary btn btn-group-vertical"
-          onClick={() => handleShow('', 'add')}
+          onClick={() => handleShow('', 'add', '')}
         >
           <span>
             <svg
@@ -68,12 +72,12 @@ const Channels = ({
                   />
                   <Dropdown.Menu>
                     <Dropdown.Item
-                      onClick={() => handleShow(channel.id, 'remove')}
+                      onClick={() => handleShow(channel.id, 'remove', channel.name)}
                     >
                       Удалить
                     </Dropdown.Item>
                     <Dropdown.Item
-                      onClick={() => handleShow(channel.id, 'rename')}
+                      onClick={() => handleShow(channel.id, 'rename', channel.name)}
                     >
                       Переименовать
                     </Dropdown.Item>
@@ -89,6 +93,7 @@ const Channels = ({
         show={modal.show}
         type={modal.type}
         channelId={modal.id}
+        channelName={modal.channelName}
         channelsList={channelsList}
         channelsAction={channelsAction}
         socket={socket}

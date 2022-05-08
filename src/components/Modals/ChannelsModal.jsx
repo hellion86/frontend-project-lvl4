@@ -16,15 +16,18 @@ const ChannelsModal = (props) => {
     channelsList,
     socket,
     channelsAction,
+    channelName,
   } = props;
+  console.log('modal props is', props);
   const dispatch = useDispatch();
   const schema = Yup.object().shape({
     channelName: Yup.string()
-      .required('Вы не ввели имя канала')
+      .required('Вы не ввели имя канал')
       .min(3, 'Имя канала не может быть меньше 3ех символов')
       .max(20, 'Имя канала не может быть больше 20 символов')
       .notOneOf(
         [channelsList.map((channel) => channel.name)],
+        // eslint-disable-next-line comma-dangle
         'Данное имя уже занято'
       ),
   });
@@ -58,11 +61,46 @@ const ChannelsModal = (props) => {
       return;
   }
 
+  // const texts = {
+  //   add: {
+  //     placeHolderText: 'Введите имя нового канала',
+  //     headerText: 'Создать канал',
+  //     buttonText: 'Отправить',
+  //     buttonClass: 'primary',
+  //   },
+  //   rename: {
+  //     placeHolderText: 'Введите новое имя канала...',
+  //     headerText: 'Переименовать канал',
+  //     buttonText: 'Отправить',
+  //     buttonClass: 'primary',
+  //   },
+  //   remove: {
+  //     headerText: 'Удалить канал',
+  //     buttonText: 'Удалить',
+  //     buttonClass: 'danger',
+  //   },
+  // };
+
+  // const init = {
+  //   channelName: '',
+  //   action: type,
+  //   placeHolderText: '',
+  //   headerText: '',
+  //   buttonText: '',
+  //   buttonClass: '',
+  //   ...texts[type],
+  // };
+  // console.log(init)
+  // const submitter = () => {
+  //   console.log('do action!', type);
+  // };
+
   return (
     <Formik
       initialValues={{
-        channelName: '',
+        channelName,
         action: type,
+        channelId,
         placeHolderText,
         headerText,
         buttonText,
@@ -70,15 +108,12 @@ const ChannelsModal = (props) => {
       }}
       validationSchema={schema}
       onSubmit={(values, actions) => {
-        // switch (values.type) {
-        //   case 'add':
-            socket.emit('newChannel', { name: values.channelName });
-            actions.resetForm({ values: '' });
-            handleClose();
-          //   break;
-          // default:
-          //   break;
-        //}
+        console.log(values);
+        // if (values.action === 'add') {
+        //   socket.emit('newChannel', { name: values.channelName });
+        actions.resetForm({ values: '' });
+        //   handleClose();
+        // }
       }}
     >
       {({ handleSubmit, handleChange, errors, values }) => (
@@ -87,8 +122,8 @@ const ChannelsModal = (props) => {
             <Modal.Title>{values.headerText}</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            {values.action !== 'remove' ? (
-              <Form onSubmit={handleSubmit}>
+            <Form>
+              {values.action !== 'remove' ? (
                 <Form.Group controlId="channelAddForm.ControlInput">
                   <Form.Control
                     type="text"
@@ -99,22 +134,18 @@ const ChannelsModal = (props) => {
                     isInvalid={errors.channelName}
                     autoFocus
                   />
+                  {errors.channelName}
                 </Form.Group>
-                {errors.channelName}
-              </Form>
-            ) : (
-              'Уверены?'
-            )}
+              ) : (
+                'Уверены?'
+              )}
+            </Form>
           </Modal.Body>
           <Modal.Footer>
             <Button variant="secondary" onClick={handleClose}>
               Отменить
             </Button>
-            <Button
-              variant={values.buttonClass}
-              type="submit"
-              onClick={handleSubmit}
-            >
+            <Button variant={values.buttonClass} onClick={handleSubmit}>
               {values.buttonText}
             </Button>
           </Modal.Footer>
