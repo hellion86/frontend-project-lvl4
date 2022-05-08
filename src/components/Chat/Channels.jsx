@@ -1,3 +1,4 @@
+/* eslint-disable object-curly-newline */
 /* eslint-disable react/function-component-definition */
 import React, { useState } from 'react';
 import { Dropdown, Button, ButtonGroup } from 'react-bootstrap';
@@ -8,11 +9,10 @@ const Channels = ({
   currentChannel,
   setCurrentChannel,
   socket,
-  channelsAction,
 }) => {
-  const [modal, setModal] = useState({ show: false, id: '', type: '', channelName: ''});
+  const [modal, setModal] = useState({ show: false, id: '', type: '', channelName: '' });
   const handleShow = (id, type, name) => setModal({ show: true, id, type, channelName: name });
-  const handleClose = () => setModal({ show: false, id: '', type: '' , channelName: ''});
+  const handleClose = () => setModal({ show: false, id: '', type: '', channelName: '' });
   const active = (id) => (id === currentChannel.id ? 'secondary' : '');
   const toggleChannel = (id, name) => setCurrentChannel({ id, name });
 
@@ -90,12 +90,12 @@ const Channels = ({
       </ul>
       <ChannelsModal
         handleClose={handleClose}
+        setCurrentChannel={setCurrentChannel}
         show={modal.show}
         type={modal.type}
         channelId={modal.id}
         channelName={modal.channelName}
         channelsList={channelsList}
-        channelsAction={channelsAction}
         socket={socket}
       />
     </div>

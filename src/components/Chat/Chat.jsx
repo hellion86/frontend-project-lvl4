@@ -58,7 +58,6 @@ const Chat = () => {
           channelsList={channelsList}
           currentChannel={currentChannel}
           setCurrentChannel={setCurrentChannel}
-          channelsAction={channelsAction}
           socket={socket}
         />
         <div className="col p-0 h-100">

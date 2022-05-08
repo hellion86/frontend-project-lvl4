@@ -45,7 +45,7 @@ const SendForm = ({
               />
               <button
                 type="submit"
-                className="btn  p-1 rounded-2"
+                className="btn p-1 rounded-2"
                 disabled={values.textMessage.length <= 0}
               >
                 <svg

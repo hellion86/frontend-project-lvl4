@@ -11,6 +11,7 @@ const messagesReducer = createSlice({
     addMessage: messagesAdapter.addOne,
     addMessages: messagesAdapter.addMany,
     removeMessage: messagesAdapter.removeOne,
+    removeAllMessages: messagesAdapter.removeMany,
   },
 });
 
