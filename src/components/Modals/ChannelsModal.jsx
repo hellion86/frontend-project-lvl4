@@ -1,34 +1,22 @@
-/* eslint-disable consistent-return */
-/* eslint-disable functional/no-let */
+/* eslint-disable object-curly-newline */
 /* eslint-disable react/function-component-definition */
 import { Formik } from 'formik';
-import React, { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import React, { useState, useEffect, useRef } from 'react';
+import { useDispatch } from 'react-redux';
 import { Modal, Form, Button } from 'react-bootstrap';
-import * as Yup from 'yup';
-import {
-  selectors as messageSelector,
-  actions as messagesAction,
-} from '../../slices/messagesSlice.js';
-import {
-  actions as channelsAction,
-} from '../../slices/channelsSlice.js';
+
+import { actions as channelsAction } from '../../slices/channelsSlice.js';
+import { prepareStateFormik, validateSchema } from './modalUtils.js';
 
 const ChannelsModal = (props) => {
-  const {
-    type,
-    show,
-    handleClose,
-    channelId,
-    channelsList,
-    socket,
-    channelName,
-    setCurrentChannel,
-  } = props;
-  // console.log('modal props is', props);
+  const { handleClose, channelsList, socket, setCurrentChannel, modalData } = props;
+  const inputRef = useRef();
+  useEffect(() => {
+    inputRef.current.focus();
+  }, []);
   const dispatch = useDispatch();
-  const messagesList = useSelector(messageSelector.selectAll);
   const [err, setErr] = useState('');
+  const channelSchema = validateSchema(channelsList);
 
   socket.on('newChannel', (msg) => {
     setCurrentChannel({ id: msg.id, name: msg.name });
@@ -36,67 +24,18 @@ const ChannelsModal = (props) => {
   });
 
   socket.on('renameChannel', (msg) => {
-    dispatch(channelsAction.renameChannel({ id: msg.id, changes: { name: msg.name } }));
+    const newNameOfChannel = { id: msg.id, changes: { name: msg.name } };
+    dispatch(channelsAction.renameChannel(newNameOfChannel));
   });
 
   socket.on('removeChannel', (msg) => {
-    const messagesOfRemoveChannel = messagesList
-      .filter((message) => message.channelId === msg.id)
-      .map((message) => message.id);
     setCurrentChannel({ id: 1, name: 'general' });
-    dispatch(messagesAction.removeAllMessages(messagesOfRemoveChannel));
     dispatch(channelsAction.removeChannel(msg.id));
-  });
-
-  let buttonText = '';
-  let headerText = '';
-  let placeHolderText = '';
-  let buttonClass = '';
-  switch (type) {
-    case 'add':
-      placeHolderText = 'Введите имя нового канала';
-      headerText = 'Создать канал';
-      buttonText = 'Отправить';
-      buttonClass = 'primary';
-      break;
-    case 'rename':
-      placeHolderText = 'Введите новое имя канала...';
-      headerText = 'Переименовать канал';
-      buttonText = 'Отправить';
-      buttonClass = 'primary';
-      break;
-    case 'remove':
-      headerText = 'Удалить канал';
-      buttonText = 'Удалить';
-      buttonClass = 'danger';
-      break;
-    default:
-      return;
-  }
-
-  const channelSchema = Yup.object().shape({
-    channelName: Yup.string()
-      .required('Вы не ввели имя канал')
-      .min(3, 'Имя канала не может быть меньше 3ех символов')
-      .max(20, 'Имя канала не может быть больше 20 символов')
-      .notOneOf(
-        [channelsList.map((channel) => channel.name)],
-        // eslint-disable-next-line comma-dangle
-        'Данное имя уже занято'
-      ),
   });
 
   return (
     <Formik
-      initialValues={{
-        channelName,
-        action: type,
-        channelId,
-        placeHolderText,
-        headerText,
-        buttonText,
-        buttonClass,
-      }}
+      initialValues={prepareStateFormik(modalData.type, modalData.channelName)}
       onSubmit={async (values, actions) => {
         if (values.action !== 'remove') {
           try {
@@ -104,7 +43,7 @@ const ChannelsModal = (props) => {
               channelName: values.channelName,
             });
             if (values.action === 'add') socket.emit('newChannel', { name: values.channelName });
-            if (values.action === 'rename') socket.emit('renameChannel', { id: channelId, name: values.channelName });
+            if (values.action === 'rename') socket.emit('renameChannel', { id: modalData.id, name: values.channelName });
             setErr('');
             actions.resetForm({ values: '' });
             handleClose();
@@ -113,14 +52,13 @@ const ChannelsModal = (props) => {
           }
         } else {
           setErr('');
-          socket.emit('removeChannel', { id: channelId });
+          socket.emit('removeChannel', { id: modalData.id });
           handleClose();
         }
       }}
     >
-      {/* eslint-disable-next-line object-curly-newline */}
       {({ handleSubmit, handleChange, values }) => (
-        <Modal show={show} onHide={handleClose} centered>
+        <Modal show={modalData.show} onHide={handleClose} centered>
           <Modal.Header closeButton>
             <Modal.Title>{values.headerText}</Modal.Title>
           </Modal.Header>
@@ -129,7 +67,7 @@ const ChannelsModal = (props) => {
               {values.action !== 'remove' ? (
                 <Form.Group controlId="channelAddForm.ControlInput">
                   <Form.Control
-                    autoFocus
+                    ref={inputRef}
                     type="text"
                     placeholder={values.placeHolderText}
                     name="channelName"
@@ -142,7 +80,7 @@ const ChannelsModal = (props) => {
                   </Form.Control.Feedback>
                 </Form.Group>
               ) : (
-                'Уверены?'
+                <div ref={inputRef}>Уверены?</div>
               )}
             </Form>
           </Modal.Body>
@@ -165,37 +103,3 @@ const ChannelsModal = (props) => {
 };
 
 export default ChannelsModal;
-
-// const texts = {
-//   add: {
-//     placeHolderText: 'Введите имя нового канала',
-//     headerText: 'Создать канал',
-//     buttonText: 'Отправить',
-//     buttonClass: 'primary',
-//   },
-//   rename: {
-//     placeHolderText: 'Введите новое имя канала...',
-//     headerText: 'Переименовать канал',
-//     buttonText: 'Отправить',
-//     buttonClass: 'primary',
-//   },
-//   remove: {
-//     headerText: 'Удалить канал',
-//     buttonText: 'Удалить',
-//     buttonClass: 'danger',
-//   },
-// };
-
-// const init = {
-//   channelName: '',
-//   action: type,
-//   placeHolderText: '',
-//   headerText: '',
-//   buttonText: '',
-//   buttonClass: '',
-//   ...texts[type],
-// };
-// console.log(init)
-// const submitter = () => {
-//   console.log('do action!', type);
-// };

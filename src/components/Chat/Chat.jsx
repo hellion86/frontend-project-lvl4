@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import axios from 'axios';
 import io from 'socket.io-client';
 import routes from '../../routes.js';
+import ErrorModal from '../Modals/ErrorModal.jsx';
 import Channels from './Channels.jsx';
 import SendForm from './SendForm.jsx';
 import Messages from './Messages.jsx';
@@ -29,27 +30,42 @@ const getAuthHeader = () => {
 const Chat = () => {
   const dispatch = useDispatch();
   const { username } = JSON.parse(localStorage.getItem('userId'));
-  const [currentChannel, setCurrentChannel] = useState({
-    id: 1,
-    name: 'general',
-  });
+  const [currentChannel, setCurrentChannel] = useState({ id: 1, name: 'general' });
+  const [showError, setShowError] = useState(false);
+  const handleClose = () => setShowError(false);
+
   const socket = io();
   useEffect(() => {
     const fetch = async () => {
-      const { data } = await axios.get(routes.getData(), {
-        headers: getAuthHeader(),
-      });
-      dispatch(channelsAction.addChannels(data.channels));
-      dispatch(messagesAction.addMessages(data.messages));
+      try {
+        const { data } = await axios.get(routes.getData(), {
+          headers: getAuthHeader(),
+        });
+        dispatch(channelsAction.addChannels(data.channels));
+        dispatch(messagesAction.addMessages(data.messages));
+        setShowError(false)
+      } catch (errors) {
+        setShowError(true)
+      }
     };
     fetch();
   }, []);
 
+  const renderModal = (show) => {
+    if (!show) {
+      return null;
+    }
+    return (
+      <ErrorModal
+        handleClose={handleClose}
+        show={show}
+      />
+    );
+  };
+
   const channelsList = useSelector(channelsSelector.selectAll);
   const messagesList = useSelector(messageSelector.selectAll);
-  const messageNumber = messagesList.filter(
-    (message) => message.channelId === currentChannel.id
-  );
+  const messageNumber = messagesList.filter((message) => message.channelId === currentChannel.id).length;
 
   return (
     <div className="container h-100 my-4 overflow-hidden rounded shadow">
@@ -59,12 +75,12 @@ const Chat = () => {
           currentChannel={currentChannel}
           setCurrentChannel={setCurrentChannel}
           socket={socket}
-        />
+          />
         <div className="col p-0 h-100">
           <div className="d-flex flex-column h-100">
             <CurrentChannel
               currentChannelName={currentChannel.name}
-              messageNumber={messageNumber.length}
+              messageNumber={messageNumber}
             />
             <Messages
               messagesList={messagesList}
@@ -79,6 +95,7 @@ const Chat = () => {
           </div>
         </div>
       </div>
+      {renderModal(showError)}
     </div>
   );
 };

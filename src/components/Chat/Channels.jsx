@@ -16,6 +16,22 @@ const Channels = ({
   const active = (id) => (id === currentChannel.id ? 'secondary' : '');
   const toggleChannel = (id, name) => setCurrentChannel({ id, name });
 
+  const renderModal = (modalInfo) => {
+    if (!modalInfo.show) {
+      return null;
+    }
+
+    return (
+      <ChannelsModal
+        handleClose={handleClose}
+        setCurrentChannel={setCurrentChannel}
+        modalData={modalInfo}
+        channelsList={channelsList}
+        socket={socket}
+      />
+    );
+  };
+
   return (
     <div className="col-4 col-md-2 border-end pt-5 px-0 bg-light">
       <div className="d-flex justify-content-between mb-2 ps-4 pe-2">
@@ -88,16 +104,7 @@ const Channels = ({
           </li>
         ))}
       </ul>
-      <ChannelsModal
-        handleClose={handleClose}
-        setCurrentChannel={setCurrentChannel}
-        show={modal.show}
-        type={modal.type}
-        channelId={modal.id}
-        channelName={modal.channelName}
-        channelsList={channelsList}
-        socket={socket}
-      />
+      {renderModal(modal)}
     </div>
   );
 };
