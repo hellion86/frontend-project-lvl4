@@ -2,8 +2,10 @@
 /* eslint-disable react/function-component-definition */
 import React from 'react';
 import { Modal } from 'react-bootstrap';
+import { useTranslation } from 'react-i18next';
 
 const ErrorModal = ({ show, handleClose }) => {
+  const { t } = useTranslation();
   return (
     <Modal
       show={show}
@@ -12,10 +14,10 @@ const ErrorModal = ({ show, handleClose }) => {
       centered
     >
       <Modal.Header closeButton>
-        <Modal.Title>Что то пошло не так...</Modal.Title>
+        <Modal.Title>{t('appErrors.modal.title')}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        Мущщина, не видите у нас в чате обед, приходите позже!
+        {t('appErrors.modal.body')}
       </Modal.Body>
     </Modal>
   );

@@ -1,21 +1,24 @@
 import * as Yup from 'yup';
+import { setLocale } from 'yup';
+import { useTranslation } from 'react-i18next';
 
 const prepareStateFormik = (action, channelName) => {
+  const { t } = useTranslation();
   const types = {
     buttonText: {
-      add: 'Отправить',
-      rename: 'Отправить',
-      remove: 'Удалить',
+      add: t('channelsList.modal.add.button'),
+      rename: t('channelsList.modal.rename.button'),
+      remove: t('channelsList.modal.remove.button'),
     },
     headerText: {
-      add: 'Создать канал',
-      rename: 'Переименовать канал',
-      remove: 'Удалить канал',
+      add: t('channelsList.modal.add.header'),
+      rename: t('channelsList.modal.rename.header'),
+      remove: t('channelsList.modal.remove.header'),
     },
     placeHolderText: {
-      add: 'Введите имя нового канала',
-      rename: 'Введите новое имя канала...',
-      remove: '',
+      add: t('channelsList.modal.add.holderText'),
+      rename: t('channelsList.modal.rename.holderText'),
+      remove: t('channelsList.modal.remove.holderText'),
     },
     buttonClass: {
       add: 'primary',
@@ -34,12 +37,25 @@ const prepareStateFormik = (action, channelName) => {
   };
 };
 
-const validateSchema = (channelsList) => Yup.object().shape({
-  channelName: Yup.string()
-    .required('Вы не ввели имя канал')
-    .min(3, 'Имя канала не может быть меньше 3ех символов')
-    .max(20, 'Имя канала не может быть больше 20 символов')
-    .notOneOf([channelsList.map((channel) => channel.name)], 'Данное имя уже занято'),
-});
+const validateSchema = (channelsList) => {
+  const { t } = useTranslation();
+  setLocale({
+    mixed: {
+      required: t('channelsList.modal.errors.emptyField'),
+      notOneOf: t('channelsList.modal.errors.noOneOf'),
+    },
+    string: {
+      min: t('channelsList.modal.errors.minLength'),
+      max: t('channelsList.modal.errors.maxLength'),
+    },
+  });
 
+  return Yup.object().shape({
+    channelName: Yup.string()
+      .required()
+      .min(3)
+      .max(20)
+      .notOneOf([channelsList.map((channel) => channel.name)]),
+  });
+};
 export { validateSchema, prepareStateFormik };

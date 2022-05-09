@@ -4,12 +4,12 @@ import { Formik } from 'formik';
 import React, { useState, useEffect, useRef } from 'react';
 import { useDispatch } from 'react-redux';
 import { Modal, Form, Button } from 'react-bootstrap';
-
+import { useTranslation } from 'react-i18next';
 import { actions as channelsAction } from '../../slices/channelsSlice.js';
 import { prepareStateFormik, validateSchema } from './modalUtils.js';
 
-const ChannelsModal = (props) => {
-  const { handleClose, channelsList, socket, setCurrentChannel, modalData } = props;
+const ChannelsModal = ({ handleClose, channelsList, socket, setCurrentChannel, modalData }) => {
+  const { t } = useTranslation();
   const inputRef = useRef();
   useEffect(() => {
     inputRef.current.focus();
@@ -80,7 +80,7 @@ const ChannelsModal = (props) => {
                   </Form.Control.Feedback>
                 </Form.Group>
               ) : (
-                <div ref={inputRef}>Уверены?</div>
+                <div ref={inputRef}>{t('channelsList.modal.remove.confirm')}</div>
               )}
             </Form>
           </Modal.Body>

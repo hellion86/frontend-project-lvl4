@@ -11,6 +11,7 @@ import {
   Navigate,
   useLocation,
 } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { Navbar, Button, Container } from 'react-bootstrap';
 import Login from './Login/Login.jsx';
 import Page404 from './404/Page404.jsx';
@@ -47,8 +48,9 @@ const PrivateRoute = ({ children }) => {
 };
 
 const LogOutButton = () => {
+  const { t } = useTranslation();
   const auth = useAuth();
-  return auth.loggedIn ? <Button onClick={auth.logOut}>Выйти</Button> : null;
+  return auth.loggedIn ? <Button onClick={auth.logOut}>{t('navBar.button.logout')}</Button> : null;
 };
 
 const App = () => (

@@ -3,12 +3,13 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { Formik, Field, Form } from 'formik';
-
+import { useTranslation } from 'react-i18next';
 // import { actions as messagesAction } from '../../slices/messagesSlice.js';
 
 const SendForm = ({
   messagesAction, username, socket, currentChannelId,
 }) => {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const [messageSent, setMesssageSent] = useState(false);
   socket.on('newMessage', (msg) => {
@@ -76,7 +77,7 @@ const SendForm = ({
         )}
       </Formik>
       {messageSent ? (
-        <div>Не удалось отправить сообщение, повторите попытку позже...</div>
+        <div className="danger">{t('chatMessages.errors.sendError')}</div>
       ) : null}
     </div>
   );

@@ -2,6 +2,7 @@
 /* eslint-disable react/function-component-definition */
 import React, { useState } from 'react';
 import { Dropdown, Button, ButtonGroup } from 'react-bootstrap';
+import { useTranslation } from 'react-i18next';
 import ChannelsModal from '../Modals/ChannelsModal.jsx';
 
 const Channels = ({
@@ -10,6 +11,7 @@ const Channels = ({
   setCurrentChannel,
   socket,
 }) => {
+  const { t } = useTranslation();
   const [modal, setModal] = useState({ show: false, id: '', type: '', channelName: '' });
   const handleShow = (id, type, name) => setModal({ show: true, id, type, channelName: name });
   const handleClose = () => setModal({ show: false, id: '', type: '', channelName: '' });
@@ -35,7 +37,7 @@ const Channels = ({
   return (
     <div className="col-4 col-md-2 border-end pt-5 px-0 bg-light">
       <div className="d-flex justify-content-between mb-2 ps-4 pe-2">
-        <span>Каналы</span>
+        <span>{t('channelsList.header')}</span>
         <button
           type="button"
           className="p-0 text-primary btn btn-group-vertical"
@@ -78,7 +80,7 @@ const Channels = ({
                 {channel.name}
               </Button>
               {!channel.removable ? (
-                ''
+                null
               ) : (
                 <>
                   <Dropdown.Toggle
@@ -90,12 +92,12 @@ const Channels = ({
                     <Dropdown.Item
                       onClick={() => handleShow(channel.id, 'remove', channel.name)}
                     >
-                      Удалить
+                      {t('channelsList.actionDelete')}
                     </Dropdown.Item>
                     <Dropdown.Item
                       onClick={() => handleShow(channel.id, 'rename', channel.name)}
                     >
-                      Переименовать
+                      {t('channelsList.actionRename')}
                     </Dropdown.Item>
                   </Dropdown.Menu>
                 </>

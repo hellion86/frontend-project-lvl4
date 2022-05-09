@@ -7,6 +7,7 @@ import {
 } from 'react-bootstrap';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import * as Yup from 'yup';
+import { useTranslation } from 'react-i18next';
 import useAuth from '../../hooks/index.jsx';
 import routes from '../../routes.js';
 import loginImage from '../../../assets/image/loginPage.jpg';
@@ -17,6 +18,7 @@ const schema = Yup.object().shape({
 });
 
 const Login = (props) => {
+  const { t } = useTranslation();
   const [authFailed, setAuthFailed] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
@@ -66,11 +68,11 @@ const Login = (props) => {
                     onSubmit={handleSubmit}
                     className="col-12 col-md-6 mt-3 mt-mb-0"
                   >
-                    <h1 className="text-center mb-4"> Войти </h1>
+                    <h1 className="text-center mb-4">{t('loginForm.welcomeHeader')}</h1>
                     <Form.Group controlId="validationFormikUserName">
                       <FloatingLabel
                         controlId="floatingInputName"
-                        label="Имя пользователя"
+                        label={t('loginForm.usernameLabel')}
                         className="mb-4"
                       >
                         <Form.Control
@@ -93,7 +95,7 @@ const Login = (props) => {
                     >
                       <FloatingLabel
                         controlId="floatingInputPassword"
-                        label="Пароль"
+                        label={t('loginForm.passwordLabel')}
                       >
                         <Form.Control
                           type="password"
@@ -105,7 +107,7 @@ const Login = (props) => {
                         />
                         <Form.Control.Feedback type="invalid">
                           {errors.password}
-                          {authFailed ? 'Такого пользователя нет' : null}
+                          {authFailed ? t('loginForm.errors.userNotExist') : null}
                         </Form.Control.Feedback>
                       </FloatingLabel>
                     </Form.Group>
@@ -115,14 +117,17 @@ const Login = (props) => {
                       className="w-100"
                       variant="outline-primary"
                     >
-                      Войти
+                      {t('loginForm.login')}
                     </Button>
                   </Form>
                 </Card.Body>
                 <Card.Footer className="p-3">
                   <div className="text-center">
-                    Нет аккаунта?
-                    <Link to="/registration"> Регистрация </Link>
+                    {t('loginForm.noAccount')}
+                    <Link to="/registration">
+                      {' '}
+                      {t('loginForm.registration')}
+                    </Link>
                   </div>
                 </Card.Footer>
               </Card>
