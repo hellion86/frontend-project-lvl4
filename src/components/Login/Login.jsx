@@ -12,11 +12,6 @@ import useAuth from '../../hooks/index.jsx';
 import routes from '../../routes.js';
 import loginImage from '../../../assets/image/loginPage.jpg';
 
-const schema = Yup.object().shape({
-  name: Yup.string().required('Вы не ввели имя пользователя'),
-  password: Yup.string().required('Вы не ввели пароль'),
-});
-
 const Login = (props) => {
   const { t } = useTranslation();
   const [authFailed, setAuthFailed] = useState(false);
@@ -24,6 +19,17 @@ const Login = (props) => {
   const navigate = useNavigate();
   const auth = useAuth();
   const { state } = props;
+
+  Yup.setLocale({
+    mixed: {
+      required: ({ path }) => t(`loginForm.errors.${path}Required`),
+    },
+  });
+  const schema = Yup.object().shape({
+    name: Yup.string().required(),
+    password: Yup.string().required(),
+  });
+
   return (
     <Formik
       initialValues={{
@@ -34,7 +40,7 @@ const Login = (props) => {
       onSubmit={async (values) => {
         setAuthFailed(false);
         try {
-          const res = await axios.post(routes.getToken(), {
+          const res = await axios.post(routes.loginUser(), {
             username: values.name,
             password: values.password,
           });
@@ -80,7 +86,7 @@ const Login = (props) => {
                           name="name"
                           value={values.name}
                           onChange={handleChange}
-                          isInvalid={!!errors.name || authFailed}
+                          isInvalid={errors.name || authFailed}
                           placeholder="username"
                         />
                         <Form.Control.Feedback type="invalid">
@@ -102,7 +108,7 @@ const Login = (props) => {
                           name="password"
                           value={values.password}
                           onChange={handleChange}
-                          isInvalid={!!errors.password || authFailed}
+                          isInvalid={errors.password || authFailed}
                           placeholder="password"
                         />
                         <Form.Control.Feedback type="invalid">

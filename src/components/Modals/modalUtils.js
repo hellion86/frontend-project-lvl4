@@ -1,5 +1,4 @@
 import * as Yup from 'yup';
-import { setLocale } from 'yup';
 import { useTranslation } from 'react-i18next';
 
 const prepareStateFormik = (action, channelName) => {
@@ -39,7 +38,7 @@ const prepareStateFormik = (action, channelName) => {
 
 const validateSchema = (channelsList) => {
   const { t } = useTranslation();
-  setLocale({
+  Yup.setLocale({
     mixed: {
       required: t('channelsList.modal.errors.emptyField'),
       notOneOf: t('channelsList.modal.errors.noOneOf'),

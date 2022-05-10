@@ -8,11 +8,25 @@ export default {
       noAccount: 'Нет аккаунта?',
       registration: 'Регистрация',
       errors: {
+        nameRequired: 'Вы не ввели имя пользователя',
+        passwordRequired: 'Вы не ввели пароль',
         userNotExist: 'Такой пользователь не зарегистрирован',
       },
     },
     registrationForm: {
-      errors: {},
+      welcomeHeader: 'Регистрация',
+      usernameLabel: 'Имя пользователя',
+      passwordLabel: 'Пароль',
+      passwordConfirmLabel: 'Подтвердите пароль',
+      submitButton: 'Зерегистрироваться',
+      errors: {
+        nameRequired: 'Вы не ввели имя пользователя',
+        nameMinLength: 'Имя должно быть больше 6и символов',
+        passwordRequired: 'Вы не ввели пароль',
+        passwordConfirmRequired: 'Необходимо подтвердить пароль',
+        oneOf: 'Пароли должны совпадать',
+        userExist: 'Такой пользователь уже зарегистрирован',
+      },
     },
     chatMessages: {
       errors: {

@@ -1,24 +1,44 @@
 /* eslint-disable arrow-body-style */
 /* eslint-disable react/function-component-definition */
-import React from 'react';
+import React, { useState } from 'react';
 import { Formik } from 'formik';
 import {
   Form, Button, Container, Card, FloatingLabel,
 } from 'react-bootstrap';
 import * as Yup from 'yup';
+import axios from 'axios';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
+import useAuth from '../../hooks/index.jsx';
+import routes from '../../routes.js';
 import registrationImage from '../../../assets/image/registrationPage.jpg';
 
-const schema = Yup.object().shape({
-  name: Yup.string()
-    .required('Вы не ввели имя пользователя')
-    .min(3, 'Имя должно быть больше 3ех символов'),
-  password: Yup.string().required('Вы не ввели пароль'),
-  passwordConfirm: Yup.string()
-    .required('Необходимо подтвердить пароль')
-    .oneOf([Yup.ref('password')], 'Пароли должны совпадать'),
-});
+const Registration = (props) => {
+  const auth = useAuth();
+  const { state } = props;
+  const { t } = useTranslation();
+  const navigate = useNavigate();
+  const location = useLocation();
+  const [authFailed, setAuthFailed] = useState(false);
+  Yup.setLocale({
+    mixed: {
+      required: ({ path }) => t(`registrationForm.errors.${path}Required`),
+      oneOf: t('registrationForm.errors.oneOf'),
+    },
+    string: {
+      min: t('registrationForm.errors.nameMinLength'),
+    },
+  });
+  const schema = Yup.object().shape({
+    name: Yup.string()
+      .required()
+      .min(6),
+    password: Yup.string().required(),
+    passwordConfirm: Yup.string()
+      .required()
+      .oneOf([Yup.ref('password')]),
+  });
 
-const Registration = () => {
   return (
     <Formik
       initialValues={{
@@ -28,11 +48,25 @@ const Registration = () => {
       }}
       validateOnBlur
       validationSchema={schema}
-      onSubmit={(values) => {
-        setTimeout(() => {
-          alert(JSON.stringify(values, null, 2));
-          // setSubmitting(false);
-        }, 1500);
+      onSubmit={async (values) => {
+        setAuthFailed(false);
+        try {
+          const res = await axios.post(routes.signupUser(), {
+            username: values.name,
+            password: values.password,
+          });
+          localStorage.setItem('userId', JSON.stringify(res.data));
+          auth.logIn();
+          const { from } = location.state || state || { from: { pathname: '/' } };
+          navigate(from);
+        } catch (err) {
+          if (err.isAxiosError && err.response.status === 409) {
+            setAuthFailed(true);
+            console.log(err);
+            return;
+          }
+          throw err;
+        }
       }}
     >
       {({
@@ -57,11 +91,11 @@ const Registration = () => {
                     onSubmit={handleSubmit}
                     className="col-12 col-md-6 mt-3 mt-mb-0"
                   >
-                    <h1 className="text-center mb-4"> Регистрация </h1>
+                    <h1 className="text-center mb-4">{t('registrationForm.welcomeHeader')}</h1>
                     <Form.Group controlId="validationFormikUserName">
                       <FloatingLabel
                         controlId="floatingInputName"
-                        label="Имя пользователя"
+                        label={t('registrationForm.usernameLabel')}
                         className="mb-4"
                       >
                         <Form.Control
@@ -70,8 +104,8 @@ const Registration = () => {
                           value={values.name}
                           onBlur={handleBlur}
                           onChange={handleChange}
-                          isInvalid={errors.name}
-                          placeholder="username"
+                          isInvalid={errors.name || authFailed}
+                          placeholder={t('registrationForm.usernameLabel')}
                         />
                         <Form.Control.Feedback type="invalid">
                           {touched.name && errors.name}
@@ -84,7 +118,7 @@ const Registration = () => {
                     >
                       <FloatingLabel
                         controlId="floatingInputPassword"
-                        label="Пароль"
+                        label={t('registrationForm.passwordLabel')}
                       >
                         <Form.Control
                           type="password"
@@ -92,8 +126,8 @@ const Registration = () => {
                           value={values.password}
                           onBlur={handleBlur}
                           onChange={handleChange}
-                          isInvalid={errors.password}
-                          placeholder="password"
+                          isInvalid={errors.password || authFailed}
+                          placeholder={t('registrationForm.passwordLabel')}
                         />
                         <Form.Control.Feedback type="invalid">
                           {touched.password && errors.password}
@@ -106,7 +140,7 @@ const Registration = () => {
                     >
                       <FloatingLabel
                         controlId="validationFormikPasswordConfirm"
-                        label="Подтвердите пароль"
+                        label={t('registrationForm.passwordConfirmLabel')}
                       >
                         <Form.Control
                           type="password"
@@ -114,11 +148,12 @@ const Registration = () => {
                           value={values.passwordConfirm}
                           onBlur={handleBlur}
                           onChange={handleChange}
-                          isInvalid={errors.passwordConfirm}
-                          placeholder="password"
+                          isInvalid={errors.passwordConfirm || authFailed}
+                          placeholder={t('registrationForm.passwordConfirmLabel')}
                         />
                         <Form.Control.Feedback type="invalid">
                           {touched.passwordConfirm && errors.passwordConfirm}
+                          {authFailed ? t('registrationForm.errors.userExist') : null}
                         </Form.Control.Feedback>
                       </FloatingLabel>
                     </Form.Group>
@@ -128,7 +163,7 @@ const Registration = () => {
                       variant="outline-primary"
                       disabled={!isValid && !dirty}
                     >
-                      Зарегистрироваться
+                      {t('registrationForm.submitButton')}
                     </Button>
                   </Form>
                 </Card.Body>
