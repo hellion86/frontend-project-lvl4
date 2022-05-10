@@ -44,7 +44,6 @@ const Chat = () => {
         const { data } = await axios.get(routes.getData(), {
           headers: getAuthHeader(),
         });
-        console.log(data)
         dispatch(channelsAction.addChannels(data.channels));
         dispatch(messagesAction.addMessages(data.messages));
         setShowError(false)
