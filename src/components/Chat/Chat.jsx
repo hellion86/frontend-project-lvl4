@@ -18,10 +18,6 @@ import {
   selectors as messageSelector,
   actions as messagesAction,
 } from '../../slices/messagesSlice.js';
-import {
-  selectors as usersSelector,
-  actions as usersAction,
-} from '../../slices/usersSlice.js';
 
 const getAuthHeader = () => {
   const userId = JSON.parse(localStorage.getItem('userId'));
@@ -34,16 +30,17 @@ const getAuthHeader = () => {
 const Chat = () => {
   const dispatch = useDispatch();
   const { username } = JSON.parse(localStorage.getItem('userId'));
-  const [currentChannel, setCurrentChannel] = useState({ id: 1, name: 'general' });
+  const [currentChannel, setCurrentChannel] = useState({});
   const [showError, setShowError] = useState(false);
   const handleClose = () => setShowError(false);
-  
+
   const channelsList = useSelector(channelsSelector.selectAll);
   const messagesList = useSelector(messageSelector.selectAll);
-  const usersList = useSelector(usersSelector.selectAll);
-
-  console.log(usersList);
-
+  // const usersList = useSelector(usersSelector.selectAll);
+  // console.log(channelsList);
+  //  console.log(usersList);
+  // const curretnChannelData = channelsList.filter((channel) => channel.id === currentChannel.id);
+  // console.log(curretnChannelData[0].name)
   const messageNumber = messagesList.filter((message) => message.channelId === currentChannel.id).length;
   const socket = io();
 
@@ -53,8 +50,10 @@ const Chat = () => {
         const { data } = await axios.get(routes.getData(), {
           headers: getAuthHeader(),
         });
+        // console.log(data)
         dispatch(channelsAction.addChannels(data.channels));
         dispatch(messagesAction.addMessages(data.messages));
+        setCurrentChannel({id: data.currentChannelId, name: 'general'})
         setShowError(false)
       } catch (errors) {
         setShowError(true)

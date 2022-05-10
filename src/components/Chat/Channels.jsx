@@ -1,6 +1,6 @@
 /* eslint-disable object-curly-newline */
 /* eslint-disable react/function-component-definition */
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { Dropdown, Button, ButtonGroup } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
@@ -13,6 +13,7 @@ const Channels = ({
   setCurrentChannel,
   socket,
 }) => {
+  // console.log(currentChannel);
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const [modal, setModal] = useState({ show: false, id: '', type: '', channelName: '' });
@@ -21,23 +22,31 @@ const Channels = ({
   const active = (id) => (id === currentChannel.id ? 'secondary' : '');
   const toggleChannel = (id, name) => setCurrentChannel({ id, name });
 
-  socket.on('renameChannel', (msg) => {
-    console.log('channel renamed!');
-    const newNameOfChannel = { id: msg.id, changes: { name: msg.name } };
-    dispatch(channelsAction.renameChannel(newNameOfChannel));
-  });
+  useEffect(() => {
+    // console.log('socket changed!');
 
-  socket.on('removeChannel', (msg) => {
-    console.log('channel removed!');
-    setCurrentChannel({ id: 1, name: 'general' });
-    dispatch(channelsAction.removeChannel(msg.id));
-  });
+    // socket.on('renameChannel', (msg) => {
+    //   console.log('rename channel work');
+    //   const newNameOfChannel = { id: msg.id, changes: { name: msg.name } };
+    //   dispatch(channelsAction.renameChannel(newNameOfChannel));
+    // });
 
-  socket.on('newChannel', (msg) => {
-    console.log('channel added!');
-    // setCurrentChannel({ id: msg.id, name: msg.name });
-    // dispatch(channelsAction.addChannel(msg));
-  });
+    // socket.on('removeChannel', (msg) => {
+    //   console.log('remove channel work');
+    //   // if (currentChannel.id === msg.id) {
+    //   //   console.log('i am in remove channel');
+    //   // setCurrentChannel({ id: 1, name: 'general' });
+    //   // dispatch(channelsAction.removeChannel(msg.id));
+    //   // } else {
+    //   dispatch(channelsAction.removeChannel(msg.id));
+    //   // }
+    // });
+    socket.on('newChannel', (msg) => {
+      console.log('for all');
+      setCurrentChannel({ id: msg.id, name: msg.name });
+      dispatch(channelsAction.addChannel(msg));
+    });
+  }, [socket]);
 
   const renderModal = (modalInfo) => {
     if (!modalInfo.show) {
@@ -46,6 +55,7 @@ const Channels = ({
 
     return (
       <ChannelsModal
+        setCurrentChannel={setCurrentChannel}
         handleClose={handleClose}
         modalData={modalInfo}
         channelsList={channelsList}
