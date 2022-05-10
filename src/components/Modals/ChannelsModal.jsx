@@ -2,36 +2,19 @@
 /* eslint-disable react/function-component-definition */
 import { Formik } from 'formik';
 import React, { useState, useEffect, useRef } from 'react';
-import { useDispatch } from 'react-redux';
 import { Modal, Form, Button } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
-import { actions as channelsAction } from '../../slices/channelsSlice.js';
 import { prepareStateFormik, validateSchema } from './modalUtils.js';
 
-const ChannelsModal = ({ handleClose, channelsList, socket, setCurrentChannel, modalData }) => {
+const ChannelsModal = ({ handleClose, channelsList, socket, modalData }) => {
   const { t } = useTranslation();
   const inputRef = useRef();
-  useEffect(() => {
-    inputRef.current.focus();
-  }, []);
-  const dispatch = useDispatch();
   const [err, setErr] = useState('');
   const channelSchema = validateSchema(channelsList);
 
-  socket.on('newChannel', (msg) => {
-    setCurrentChannel({ id: msg.id, name: msg.name });
-    dispatch(channelsAction.addChannel(msg));
-  });
-
-  socket.on('renameChannel', (msg) => {
-    const newNameOfChannel = { id: msg.id, changes: { name: msg.name } };
-    dispatch(channelsAction.renameChannel(newNameOfChannel));
-  });
-
-  socket.on('removeChannel', (msg) => {
-    setCurrentChannel({ id: 1, name: 'general' });
-    dispatch(channelsAction.removeChannel(msg.id));
-  });
+  useEffect(() => {
+    inputRef.current.focus();
+  }, []);
 
   return (
     <Formik
@@ -63,7 +46,7 @@ const ChannelsModal = ({ handleClose, channelsList, socket, setCurrentChannel, m
             <Modal.Title>{values.headerText}</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            <Form>
+            <Form onSubmit={handleSubmit}>
               {values.action !== 'remove' ? (
                 <Form.Group controlId="channelAddForm.ControlInput">
                   <Form.Control
@@ -85,13 +68,12 @@ const ChannelsModal = ({ handleClose, channelsList, socket, setCurrentChannel, m
             </Form>
           </Modal.Body>
           <Modal.Footer>
-            <Button variant="secondary" onClick={handleClose}>
+            <Button variant="secondary" onSubmit={handleClose}>
               Отменить
             </Button>
             <Button
               variant={values.buttonClass}
               type="submit"
-              onClick={handleSubmit}
             >
               {values.buttonText}
             </Button>

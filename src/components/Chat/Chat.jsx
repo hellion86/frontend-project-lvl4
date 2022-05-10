@@ -18,6 +18,10 @@ import {
   selectors as messageSelector,
   actions as messagesAction,
 } from '../../slices/messagesSlice.js';
+import {
+  selectors as usersSelector,
+  actions as usersAction,
+} from '../../slices/usersSlice.js';
 
 const getAuthHeader = () => {
   const userId = JSON.parse(localStorage.getItem('userId'));
@@ -33,8 +37,13 @@ const Chat = () => {
   const [currentChannel, setCurrentChannel] = useState({ id: 1, name: 'general' });
   const [showError, setShowError] = useState(false);
   const handleClose = () => setShowError(false);
+  
   const channelsList = useSelector(channelsSelector.selectAll);
   const messagesList = useSelector(messageSelector.selectAll);
+  const usersList = useSelector(usersSelector.selectAll);
+
+  console.log(usersList);
+
   const messageNumber = messagesList.filter((message) => message.channelId === currentChannel.id).length;
   const socket = io();
 

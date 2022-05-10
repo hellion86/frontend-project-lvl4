@@ -1,8 +1,10 @@
 /* eslint-disable object-curly-newline */
 /* eslint-disable react/function-component-definition */
 import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { Dropdown, Button, ButtonGroup } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
+import { actions as channelsAction } from '../../slices/channelsSlice.js';
 import ChannelsModal from '../Modals/ChannelsModal.jsx';
 
 const Channels = ({
@@ -12,11 +14,30 @@ const Channels = ({
   socket,
 }) => {
   const { t } = useTranslation();
+  const dispatch = useDispatch();
   const [modal, setModal] = useState({ show: false, id: '', type: '', channelName: '' });
   const handleShow = (id, type, name) => setModal({ show: true, id, type, channelName: name });
   const handleClose = () => setModal({ show: false, id: '', type: '', channelName: '' });
   const active = (id) => (id === currentChannel.id ? 'secondary' : '');
   const toggleChannel = (id, name) => setCurrentChannel({ id, name });
+
+  socket.on('renameChannel', (msg) => {
+    console.log('channel renamed!');
+    const newNameOfChannel = { id: msg.id, changes: { name: msg.name } };
+    dispatch(channelsAction.renameChannel(newNameOfChannel));
+  });
+
+  socket.on('removeChannel', (msg) => {
+    console.log('channel removed!');
+    setCurrentChannel({ id: 1, name: 'general' });
+    dispatch(channelsAction.removeChannel(msg.id));
+  });
+
+  socket.on('newChannel', (msg) => {
+    console.log('channel added!');
+    // setCurrentChannel({ id: msg.id, name: msg.name });
+    // dispatch(channelsAction.addChannel(msg));
+  });
 
   const renderModal = (modalInfo) => {
     if (!modalInfo.show) {
@@ -26,7 +47,6 @@ const Channels = ({
     return (
       <ChannelsModal
         handleClose={handleClose}
-        setCurrentChannel={setCurrentChannel}
         modalData={modalInfo}
         channelsList={channelsList}
         socket={socket}
