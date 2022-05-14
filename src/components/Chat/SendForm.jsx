@@ -1,20 +1,20 @@
 /* eslint-disable import/no-extraneous-dependencies */
 /* eslint-disable react/function-component-definition */
 import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
+// import { useDispatch } from 'react-redux';
 import { Formik, Field, Form } from 'formik';
 import { useTranslation } from 'react-i18next';
 // import { actions as messagesAction } from '../../slices/messagesSlice.js';
 
 const SendForm = ({
-  messagesAction, username, socket, currentChannelId,
+  username, socket, currentChannelId,
 }) => {
   const { t } = useTranslation();
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
   const [messageSent, setMesssageSent] = useState(false);
-  socket.on('newMessage', (msg) => {
-    dispatch(messagesAction.addMessage(msg));
-  });
+  // socket.on('newMessage', (msg) => {
+  //   dispatch(messagesAction.addMessage(msg));
+  // });
 
   return (
     <div className="mt-auto px-5 py-3">

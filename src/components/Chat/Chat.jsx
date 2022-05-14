@@ -1,8 +1,8 @@
 /* eslint-disable */
 import React, { useState, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector, batch } from 'react-redux';
 import axios from 'axios';
-import io from 'socket.io-client';
+import useAuth from '../../hooks/index.jsx';
 import routes from '../../routes.js';
 import ErrorModal from '../Modals/ErrorModal.jsx';
 import Channels from './Channels.jsx';
@@ -30,19 +30,17 @@ const getAuthHeader = () => {
 const Chat = () => {
   const dispatch = useDispatch();
   const { username } = JSON.parse(localStorage.getItem('userId'));
-  const [currentChannel, setCurrentChannel] = useState({});
+  // const [currentChannel, setCurrentChannel] = useState({});
   const [showError, setShowError] = useState(false);
   const handleClose = () => setShowError(false);
 
-  const channelsList = useSelector(channelsSelector.selectAll);
+  const channelsList = useSelector((state) => state.channelsReducer.channels);
+  const currentChannel = useSelector((state) => state.channelsReducer.currentChannel);
   const messagesList = useSelector(messageSelector.selectAll);
-  // const usersList = useSelector(usersSelector.selectAll);
-  // console.log(channelsList);
-  //  console.log(usersList);
-  // const curretnChannelData = channelsList.filter((channel) => channel.id === currentChannel.id);
-  // console.log(curretnChannelData[0].name)
-  const messageNumber = messagesList.filter((message) => message.channelId === currentChannel.id).length;
-  const socket = io();
+  const messageNumber = messagesList.filter((message) => message.channelId === currentChannel).length;
+
+  const auth = useAuth();
+  const socket = auth.socket;
 
   useEffect(() => {
     const fetch = async () => {
@@ -50,11 +48,11 @@ const Chat = () => {
         const { data } = await axios.get(routes.getData(), {
           headers: getAuthHeader(),
         });
-        // console.log(data)
         dispatch(channelsAction.addChannels(data.channels));
+        dispatch(channelsAction.setCurrentChannel(data.currentChannelId))
         dispatch(messagesAction.addMessages(data.messages));
-        setCurrentChannel({id: data.currentChannelId, name: 'general'})
         setShowError(false)
+        //setCurrentChannel({id: data.currentChannelId, name: 'general'})
       } catch (errors) {
         setShowError(true)
       }
@@ -80,24 +78,24 @@ const Chat = () => {
         <Channels
           channelsList={channelsList}
           currentChannel={currentChannel}
-          setCurrentChannel={setCurrentChannel}
+          // setCurrentChannel={setCurrentChannel}
           socket={socket}
           />
         <div className="col p-0 h-100">
           <div className="d-flex flex-column h-100">
             <CurrentChannel
-              currentChannelName={currentChannel.name}
+              currentChannel={currentChannel}
               messageNumber={messageNumber}
+            
             />
-            <Messages
+            {/* <Messages
               messagesList={messagesList}
               currentChannelId={currentChannel.id}
-            />
+            /> */}
             <SendForm
               socket={socket}
               username={username}
-              messagesAction={messagesAction}
-              currentChannelId={currentChannel.id}
+              currentChannelId={currentChannel}
             />
           </div>
         </div>

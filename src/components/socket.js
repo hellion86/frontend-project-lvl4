@@ -1,14 +1,24 @@
+/* eslint-disable import/prefer-default-export */
 // import io from 'socket.io-client';
-// import { useDispatch } from 'react-redux';
-// import { actions as channelsAction } from '../slices/channelsSlice.js';
+import { actions as channelsAction } from '../slices/channelsSlice.js';
+import { actions as messagesAction } from '../slices/messagesSlice.js';
 
-// const socket = io();
-// // const dispatch = useDispatch();
+export const socketInit = (dispatch, socket) => {
+  socket.on('newMessage', (msg) => {
+    dispatch(messagesAction.addMessage(msg));
+  });
 
-// export const pushChannel = (name) => {
-//   socket.emit('newChannel', { channel: name });
-//   socket.on('newChannel', (msg) => {
-//     console.log(msg);
-//     // dispatch(channelsAction.addChannel(msg));
-//   });
-// };
+  socket.on('newChannel', (msg) => {
+    dispatch(channelsAction.addChannel(msg));
+  });
+
+  socket.on('renameChannel', (msg) => {
+    const newNameOfChannel = { id: msg.id, changes: { name: msg.name } };
+    dispatch(channelsAction.renameChannel(newNameOfChannel));
+  });
+
+  socket.on('removeChannel', (msg) => {
+    console.log(msg);
+    dispatch(channelsAction.removeChannel(msg.id));
+  });
+};

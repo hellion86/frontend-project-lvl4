@@ -13,6 +13,9 @@ import {
 } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Navbar, Button, Container } from 'react-bootstrap';
+import io from 'socket.io-client';
+import { useDispatch } from 'react-redux';
+import { socketInit } from './socket.js';
 import Login from './Login/Login.jsx';
 import Page404 from './404/Page404.jsx';
 import Registration from './Registration/Registration.jsx';
@@ -24,13 +27,15 @@ const AuthProvider = ({ children }) => {
   const au = JSON.parse(localStorage.getItem('userId'));
   const [loggedIn, setLoggedIn] = useState(au);
   const logIn = () => setLoggedIn(true);
+  const socket = io();
+  const dispath = useDispatch();
+  socketInit(dispath, socket);
   const logOut = () => {
     localStorage.removeItem('userId');
     setLoggedIn(false);
   };
-
   return (
-    <AuthContext.Provider value={{ loggedIn, logIn, logOut }}>
+    <AuthContext.Provider value={{ loggedIn, logIn, logOut, socket }}>
       {children}
     </AuthContext.Provider>
   );
