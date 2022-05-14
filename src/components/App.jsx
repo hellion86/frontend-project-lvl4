@@ -27,15 +27,12 @@ const AuthProvider = ({ children }) => {
   const au = JSON.parse(localStorage.getItem('userId'));
   const [loggedIn, setLoggedIn] = useState(au);
   const logIn = () => setLoggedIn(true);
-  const socket = io();
-  const dispath = useDispatch();
-  socketInit(dispath, socket);
   const logOut = () => {
     localStorage.removeItem('userId');
     setLoggedIn(false);
   };
   return (
-    <AuthContext.Provider value={{ loggedIn, logIn, logOut, socket }}>
+    <AuthContext.Provider value={{ loggedIn, logIn, logOut  }}>
       {children}
     </AuthContext.Provider>
   );

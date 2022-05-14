@@ -7,7 +7,7 @@ import { useTranslation } from 'react-i18next';
 // import { actions as messagesAction } from '../../slices/messagesSlice.js';
 
 const SendForm = ({
-  username, socket, currentChannelId,
+  username, socket, currentChannel,
 }) => {
   const { t } = useTranslation();
   // const dispatch = useDispatch();
@@ -23,7 +23,7 @@ const SendForm = ({
         onSubmit={(values, actions) => {
           socket.emit(
             'newMessage',
-            { ...values, author: username, channelId: currentChannelId },
+            { ...values, author: username, channelId: currentChannel.id },
             (response) => {
               if (response.status !== 'ok') {
                 setMesssageSent(true);

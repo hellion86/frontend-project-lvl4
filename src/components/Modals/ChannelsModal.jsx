@@ -1,26 +1,24 @@
 /* eslint-disable object-curly-newline */
 /* eslint-disable react/function-component-definition */
 import { Formik } from 'formik';
-// import { useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import React, { useState, useEffect, useRef } from 'react';
 import { Modal, Form, Button } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { prepareStateFormik, validateSchema } from './modalUtils.js';
-// import { actions as channelsAction } from '../../slices/channelsSlice.js';
+import { actions as channelsAction } from '../../slices/channelsSlice.js';
 
 const ChannelsModal = ({
   handleClose,
   channelsList,
   socket,
-  setCurrentChannel,
   modalData,
-  currentChannel,
 }) => {
   const { t } = useTranslation();
   const inputRef = useRef();
   const [err, setErr] = useState('');
   const channelSchema = validateSchema(channelsList);
-  // const dispatch = useDispatch();
+  const dispatch = useDispatch();
 
   useEffect(() => {
     inputRef.current.focus();
@@ -38,7 +36,7 @@ const ChannelsModal = ({
             socket.emit('newChannel', { name: values.channelName }, (response) => {
               const { data } = response;
               if (response.status === 'ok') {
-                setCurrentChannel({ id: data.id, name: data.name });
+                dispatch(channelsAction.setCurrentChannel({ id: data.id, name: data.name }));
               }
             });
           }
@@ -49,13 +47,7 @@ const ChannelsModal = ({
             });
           }
           if (values.action === 'remove') {
-            socket.emit('removeChannel', { id: modalData.id }, (response) => {
-              if (response.status === 'ok') {
-                if (currentChannel.id === modalData.id) {
-                  setCurrentChannel({ id: 1, name: 'general' });
-                }
-              }
-            });
+            socket.emit('removeChannel', { id: modalData.id });
           }
           setErr('');
           actions.resetForm({ values: '' });

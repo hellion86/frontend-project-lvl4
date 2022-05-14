@@ -10,7 +10,6 @@ import ChannelsModal from '../Modals/ChannelsModal.jsx';
 const Channels = ({
   channelsList,
   currentChannel,
-  // setCurrentChannel,
   socket,
 }) => {
   const { t } = useTranslation();
@@ -18,12 +17,8 @@ const Channels = ({
   const [modal, setModal] = useState({ show: false, id: '', type: '', channelName: '' });
   const handleShow = (id, type, name) => setModal({ show: true, id, type, channelName: name });
   const handleClose = () => setModal({ show: false, id: '', type: '', channelName: '' });
-  const active = (id) => (id === currentChannel ? 'secondary' : '');
-  // const toggleChannel = (id, name) => setCurrentChannel({ id, name });
-  const toggleChannel = (id, name) => {
-    dispatch(channelsAction.setCurrentChannel(id));
-    // setCurrentChannel({ id, name });
-  };
+  const active = (id) => (id === currentChannel.id ? 'secondary' : '');
+  const toggleChannel = (id, name) => dispatch(channelsAction.setCurrentChannel({ id, name }));
 
   const renderModal = (modalInfo) => {
     if (!modalInfo.show) {
@@ -32,8 +27,6 @@ const Channels = ({
 
     return (
       <ChannelsModal
-        setCurrentChannel={setCurrentChannel}
-        currentChannel={currentChannel}
         handleClose={handleClose}
         modalData={modalInfo}
         channelsList={channelsList}

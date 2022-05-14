@@ -9,16 +9,17 @@ export const socketInit = (dispatch, socket) => {
   });
 
   socket.on('newChannel', (msg) => {
+    console.log('i am work!')
     dispatch(channelsAction.addChannel(msg));
   });
 
   socket.on('renameChannel', (msg) => {
-    const newNameOfChannel = { id: msg.id, changes: { name: msg.name } };
+    const newNameOfChannel = { id: msg.id, newName: msg.name };
     dispatch(channelsAction.renameChannel(newNameOfChannel));
   });
 
   socket.on('removeChannel', (msg) => {
-    console.log(msg);
+    console.log('remove socket work')
     dispatch(channelsAction.removeChannel(msg.id));
   });
 };

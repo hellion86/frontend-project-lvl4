@@ -1,8 +1,8 @@
 /* eslint-disable react/function-component-definition */
 import React from 'react';
 
-const Messages = ({ messagesList, currentChannelId }) => {
-  const currentMessages = messagesList.filter((message) => message.channelId === currentChannelId);
+const Messages = ({ messagesList, currentChannel }) => {
+  const currentMessages = messagesList.filter((message) => message.channelId === currentChannel.id);
   return (
     <div id="messages-box" className="chat-messages overflow-auto px-5 ">
       {currentMessages.map((message) => (
