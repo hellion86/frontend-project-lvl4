@@ -18,6 +18,9 @@ const SendForm = ({
       <Formik
         initialValues={{ textMessage: '' }}
         onSubmit={(values, actions) => {
+          if (values.textMessage === '42') {
+            throw new Error('oops');
+          }
           const text = filter.clean(values.textMessage);
           content.socket.emit(
             'newMessage',

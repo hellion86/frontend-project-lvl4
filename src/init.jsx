@@ -1,5 +1,6 @@
 import React from 'react';
-import { Provider } from 'react-redux';
+import { Provider, ErrorBoundary } from '@rollbar/react';
+import * as ReactRedux from 'react-redux';
 import { I18nextProvider, initReactI18next } from 'react-i18next';
 import { BrowserRouter } from 'react-router-dom';
 import i18n from 'i18next';
@@ -21,20 +22,34 @@ const init = async () => {
       escapeValue: false,
     },
   });
+
+  const rollbarConfig = {
+    accessToken: 'bbbe6095f5444200bc897416f11f6b9f',
+    captureUncaught: true,
+    captureUnhandledRejections: true,
+    payload: {
+      environment: 'production',
+    },
+  };
+
   const socket = io();
 
   return (
-    <Provider store={store}>
+    <ReactRedux.Provider store={store}>
       <AuthProvider>
         <ContentProvider socket={socket}>
           <I18nextProvider i18={i18nextInstance}>
             <BrowserRouter>
-              <App />
+              <Provider config={rollbarConfig}>
+                <ErrorBoundary>
+                  <App />
+                </ErrorBoundary>
+              </Provider>
             </BrowserRouter>
           </I18nextProvider>
         </ContentProvider>
       </AuthProvider>
-    </Provider>
+    </ReactRedux.Provider>
   );
 };
 
