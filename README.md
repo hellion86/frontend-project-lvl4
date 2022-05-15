@@ -11,13 +11,6 @@
 $ make install
 ```
 
-## Run
-
-```sh
-$ make start
-# open http://localhost:5555
-```
-
 ## Heroku link
 
 [My app](https://rocky-headland-56319.herokuapp.com/)
