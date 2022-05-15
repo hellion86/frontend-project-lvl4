@@ -7,33 +7,36 @@ import { Modal, Form, Button } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { prepareStateFormik, validateSchema } from './modalUtils.js';
 import { actions as channelsAction } from '../../slices/channelsSlice.js';
+import useCon from '../../hooks/useContent.jsx';
 
 const ChannelsModal = ({
   handleClose,
   channelsList,
-  socket,
   modalData,
 }) => {
   const { t } = useTranslation();
+  const content = useCon();
   const inputRef = useRef();
-  const [err, setErr] = useState('');
-  const channelSchema = validateSchema(channelsList);
   const dispatch = useDispatch();
-
+  const channelSchema = validateSchema(channelsList);
+  const [err, setErr] = useState('');
   useEffect(() => {
     inputRef.current.focus();
   }, []);
-
   return (
     <Formik
       initialValues={prepareStateFormik(modalData.type, modalData.channelName)}
       onSubmit={async (values, actions) => {
+        if (values.action === 'remove') {
+          content.socket.emit('removeChannel', { id: modalData.id });
+          handleClose();
+        }
         try {
           await channelSchema.validate({
-            channelName: values.action,
+            channelName: values.channelName,
           });
           if (values.action === 'add') {
-            socket.emit('newChannel', { name: values.channelName }, (response) => {
+            content.socket.emit('newChannel', { name: values.channelName }, (response) => {
               const { data } = response;
               if (response.status === 'ok') {
                 dispatch(channelsAction.setCurrentChannel({ id: data.id, name: data.name }));
@@ -41,13 +44,10 @@ const ChannelsModal = ({
             });
           }
           if (values.action === 'rename') {
-            socket.emit('renameChannel', {
+            content.socket.emit('renameChannel', {
               id: modalData.id,
               name: values.channelName,
             });
-          }
-          if (values.action === 'remove') {
-            socket.emit('removeChannel', { id: modalData.id });
           }
           setErr('');
           actions.resetForm({ values: '' });

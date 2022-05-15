@@ -10,7 +10,6 @@ import ChannelsModal from '../Modals/ChannelsModal.jsx';
 const Channels = ({
   channelsList,
   currentChannel,
-  socket,
 }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -30,7 +29,6 @@ const Channels = ({
         handleClose={handleClose}
         modalData={modalInfo}
         channelsList={channelsList}
-        socket={socket}
       />
     );
   };

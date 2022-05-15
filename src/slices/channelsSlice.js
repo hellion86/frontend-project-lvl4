@@ -14,18 +14,14 @@ const getAuthHeader = () => {
 export const fetchChannels = createAsyncThunk(
   'channelsList/fetchChannels',
   async () => {
-    const data = await axios.get(routes.getData(), {
+    const response = await axios.get(routes.getData(), {
       headers: getAuthHeader(),
     });
-    const channels = await data.data.channels;
-    // console.log(channels);
-    console.log('fetch work')
+    const channels = await response.data.channels;
     return channels;
   },
 );
-// const channelsAdapter = createEntityAdapter();
 
-// const initialState = channelsAdapter.getInitialState();
 const initialState = {
   channels: [],
   currentChannel: {},
@@ -37,46 +33,31 @@ const channelsReducer = createSlice({
   name: 'channelsList',
   initialState,
   reducers: {
-    // addChannels: (state, action) => {
-    //   const newState = [...action.payload];
-    //   state.channels = newState;
-    // },
     setCurrentChannel: (state, action) => {
       const { id, name } = action.payload;
       state.currentChannel.id = id;
       state.currentChannel.name = name;
     },
     renameChannel: (state, action) => {
-      // console.log(action)
-      // const { id, newName } = action.payload;
-      // const idRenameChannel = state.channels.filter((c) => c.id === id);
-      // console.log(idRenameChannel);
-      // idRenameChannel[0].name = newName;
-      // state.channels = [...state.channels, ...idRenameChannel ]
-      // const newState = state.channels.filter((c) => c.id !== id);
-      // state = [...newState, idRenameChannel[0]];
+      const { id, newName } = action.payload;
+      const [renameChannel] = state.channels.filter((c) => c.id === id);
+      renameChannel.name = newName;
     },
     addChannel: (state, action) => {
-      // console.log(action);
-      // console.log(state.channels);
-      state.channels = [...state.channels, action.payload]
-      // state.channels.push(action.payload);
-      // state.channels = [...state.channels, action.payload];
+      state.channels = [...state.channels, action.payload];
     },
     removeChannel: (state, action) => {
       const newState = state.channels.filter((c) => c.id !== action.payload);
       if (action.payload === state.currentChannel.id) {
-        // state.currentChannel.id = 1;
-        // state.currentChannel.name = 'general';
-        channelsReducer.actions.setCurrentChannel({ id: 1, name: 'general' });
+        state.currentChannel.id = 1;
+        state.currentChannel.name = 'general';
       }
       state.channels = newState;
     },
   },
   extraReducers: (builder) => {
     builder
-      .addCase(fetchChannels.pending, (state, action) => {
-        console.log(action);
+      .addCase(fetchChannels.pending, (state) => {
         state.status = 'loading';
         state.error = false;
       })
@@ -84,19 +65,13 @@ const channelsReducer = createSlice({
         state.status = 'resolved';
         state.channels = action.payload;
       })
-      .addCase(fetchChannels.rejected, (state, action) => {
-        console.log(action);
+      .addCase(fetchChannels.rejected, (state) => {
         state.status = 'loading';
         state.error = true;
       });
   },
-  // addChannels: channelsAdapter.addMany,
-  // addChannel: channelsAdapter.addOne,
-  // removeChannel: channelsAdapter.removeOne,
-  // renameChannel: channelsAdapter.updateOne,
 });
 
 export const { actions } = channelsReducer;
-// export const selectors = channelsAdapter.getSelectors((state) => state.channelsReducer);
 
 export default channelsReducer.reducer;

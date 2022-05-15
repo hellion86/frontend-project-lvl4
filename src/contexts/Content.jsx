@@ -1,15 +1,19 @@
-/* eslint-disable import/prefer-default-export */
-// import io from 'socket.io-client';
+/* eslint-disable react/function-component-definition */
+import React, { createContext } from 'react';
+import { useDispatch } from 'react-redux';
 import { actions as channelsAction } from '../slices/channelsSlice.js';
 import { actions as messagesAction } from '../slices/messagesSlice.js';
 
-export const socketInit = (dispatch, socket) => {
+export const ContentContext = createContext({});
+
+const ContentProvider = ({ children, socket }) => {
+  const dispatch = useDispatch();
+
   socket.on('newMessage', (msg) => {
     dispatch(messagesAction.addMessage(msg));
   });
 
   socket.on('newChannel', (msg) => {
-    console.log('i am work!')
     dispatch(channelsAction.addChannel(msg));
   });
 
@@ -19,7 +23,15 @@ export const socketInit = (dispatch, socket) => {
   });
 
   socket.on('removeChannel', (msg) => {
-    console.log('remove socket work')
     dispatch(channelsAction.removeChannel(msg.id));
   });
+
+  return (
+    // eslint-disable-next-line react/jsx-no-constructed-context-values
+    <ContentContext.Provider value={{ socket }}>
+      {children}
+    </ContentContext.Provider>
+  );
 };
+
+export default ContentProvider;

@@ -1,27 +1,22 @@
 /* eslint-disable import/no-extraneous-dependencies */
 /* eslint-disable react/function-component-definition */
 import React, { useState } from 'react';
-// import { useDispatch } from 'react-redux';
 import { Formik, Field, Form } from 'formik';
 import { useTranslation } from 'react-i18next';
-// import { actions as messagesAction } from '../../slices/messagesSlice.js';
+import useCon from '../../hooks/useContent.jsx';
 
 const SendForm = ({
-  username, socket, currentChannel,
+  username, currentChannel,
 }) => {
   const { t } = useTranslation();
-  // const dispatch = useDispatch();
   const [messageSent, setMesssageSent] = useState(false);
-  // socket.on('newMessage', (msg) => {
-  //   dispatch(messagesAction.addMessage(msg));
-  // });
-
+  const content = useCon();
   return (
     <div className="mt-auto px-5 py-3">
       <Formik
         initialValues={{ textMessage: '' }}
         onSubmit={(values, actions) => {
-          socket.emit(
+          content.socket.emit(
             'newMessage',
             { ...values, author: username, channelId: currentChannel.id },
             (response) => {
@@ -38,7 +33,6 @@ const SendForm = ({
         {({ values }) => (
           <Form className="py-1 border rounded-2">
             <div className="input-group has-validation">
-              {/* // {errors.textMessage  ? <div>{errors.textMessage}</div> : null} */}
               <Field
                 name="textMessage"
                 type="text"
