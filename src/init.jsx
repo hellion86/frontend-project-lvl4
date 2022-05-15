@@ -25,11 +25,7 @@ const init = async () => {
 
   const rollbarConfig = {
     accessToken: 'bbbe6095f5444200bc897416f11f6b9f',
-    captureUncaught: true,
-    captureUnhandledRejections: true,
-    payload: {
-      environment: 'production',
-    },
+    environment: 'production',
   };
 
   const socket = io();
