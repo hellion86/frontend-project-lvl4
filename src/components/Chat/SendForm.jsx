@@ -3,11 +3,13 @@
 import React, { useState } from 'react';
 import { Formik, Field, Form } from 'formik';
 import { useTranslation } from 'react-i18next';
+import * as filter from 'leo-profanity';
 import useCon from '../../hooks/useContent.jsx';
 
 const SendForm = ({
   username, currentChannel,
 }) => {
+  filter.add(filter.getDictionary('ru'));
   const { t } = useTranslation();
   const [messageSent, setMesssageSent] = useState(false);
   const content = useCon();
@@ -16,9 +18,10 @@ const SendForm = ({
       <Formik
         initialValues={{ textMessage: '' }}
         onSubmit={(values, actions) => {
+          const text = filter.clean(values.textMessage);
           content.socket.emit(
             'newMessage',
-            { ...values, author: username, channelId: currentChannel.id },
+            { textMessage: text, author: username, channelId: currentChannel.id },
             (response) => {
               if (response.status !== 'ok') {
                 setMesssageSent(true);
