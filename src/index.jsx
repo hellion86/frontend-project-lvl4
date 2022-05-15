@@ -2,8 +2,7 @@
 import regeneratorRuntime, { async } from 'regenerator-runtime';
 import ReactDOM from 'react-dom/client';
 import init from './init.jsx';
-import 'bootstrap/dist/js/bootstrap.bundle.min.js';
-import 'bootstrap/scss/bootstrap.scss';
+import '../assets/application.scss';
 
 const runApp = async () => {
   const app = await init();
