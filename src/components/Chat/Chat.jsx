@@ -1,5 +1,5 @@
 /* eslint-disable */
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchChannels } from '../../slices/channelsSlice.js';
 import { fetchMessages } from '../../slices/messagesSlice.js';
@@ -21,8 +21,7 @@ const Chat = () => {
   const messageNumber = messages.filter((message) => message.channelId === currentChannel.id).length;
   const notify = () => toast.error(t('appErrors.modal.failFetch'))
 
-  
-  useEffect(() => {
+    useEffect(() => {
     dispatch(fetchChannels());
     dispatch(fetchMessages());
     dispatch(channelsAction.setCurrentChannel({id: 1, name: 'general' }))

@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { Formik, Field, Form } from 'formik';
 import { useTranslation } from 'react-i18next';
 import * as filter from 'leo-profanity';
+
 import useCon from '../../hooks/useContent.jsx';
 
 const SendForm = ({
@@ -13,14 +14,12 @@ const SendForm = ({
   const { t } = useTranslation();
   const [messageSent, setMesssageSent] = useState(false);
   const content = useCon();
+
   return (
     <div className="mt-auto px-5 py-3">
       <Formik
         initialValues={{ textMessage: '' }}
         onSubmit={(values, actions) => {
-          if (values.textMessage === '42') {
-            throw new Error('oops');
-          }
           const text = filter.clean(values.textMessage);
           content.socket.emit(
             'newMessage',
