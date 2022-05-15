@@ -4,20 +4,19 @@ import React from 'react';
 import { Modal } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 
-const ErrorModal = ({ show, handleClose }) => {
+const ErrorModal = ({ show }) => {
   const { t } = useTranslation();
   return (
     <Modal
       show={show}
-      onHide={handleClose}
       aria-labelledby="contained-modal-title-vcenter"
       centered
     >
-      <Modal.Header closeButton>
+      <Modal.Header>
         <Modal.Title>{t('appErrors.modal.title')}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        {t('appErrors.modal.body')}
+        {t('appErrors.modal.failFetch')}
       </Modal.Body>
     </Modal>
   );

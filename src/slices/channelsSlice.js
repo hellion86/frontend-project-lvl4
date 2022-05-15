@@ -13,12 +13,21 @@ const getAuthHeader = () => {
 
 export const fetchChannels = createAsyncThunk(
   'channelsList/fetchChannels',
-  async () => {
-    const response = await axios.get(routes.getData(), {
-      headers: getAuthHeader(),
-    });
-    const channels = await response.data.channels;
-    return channels;
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await axios.get(routes.getData(), {
+      // const response = await axios.get(routes.errorPath(), {
+        headers: getAuthHeader(),
+      });
+      const channels = await response.data.channels;
+      if (!channels) {
+        throw new Error('failFetchChannels');
+      }
+
+      return channels;
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
   },
 );
 
@@ -26,7 +35,7 @@ const initialState = {
   channels: [],
   currentChannel: {},
   status: null,
-  error: false,
+  channelsError: null,
 };
 
 const channelsReducer = createSlice({
@@ -59,15 +68,15 @@ const channelsReducer = createSlice({
     builder
       .addCase(fetchChannels.pending, (state) => {
         state.status = 'loading';
-        state.error = false;
+        state.error = '';
       })
       .addCase(fetchChannels.fulfilled, (state, action) => {
         state.status = 'resolved';
         state.channels = action.payload;
       })
-      .addCase(fetchChannels.rejected, (state) => {
-        state.status = 'loading';
-        state.error = true;
+      .addCase(fetchChannels.rejected, (state, action) => {
+        state.status = 'failed';
+        state.channelsError = action.payload;
       });
   },
 });

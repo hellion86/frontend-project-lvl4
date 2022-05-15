@@ -14,17 +14,25 @@ const getAuthHeader = () => {
 
 export const fetchMessages = createAsyncThunk(
   'messagesList/fetchMessages',
-  async () => {
-    const response = await axios.get(routes.getData(), {
-      headers: getAuthHeader(),
-    });
-    const messages = await response.data.messages;
-    return messages;
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await axios.get(routes.getData(), {
+        headers: getAuthHeader(),
+      });
+      const messages = await response.data.messages;
+      if (!messages) {
+        throw new Error('failFetchMessages');
+      }
+      return messages;
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
   },
 );
 
 const initialState = {
   messages: [],
+  messageError: '',
 };
 
 const messagesReducer = createSlice({
@@ -44,6 +52,9 @@ const messagesReducer = createSlice({
     builder
       .addCase(fetchMessages.fulfilled, (state, action) => {
         state.messages = action.payload;
+      })
+      .addCase(fetchMessages.rejected, (state, action) => {
+        state.messageError = action.payload;
       })
       .addCase(channelActions.removeChannel, (state, action) => {
         const idRemoveChannel = action.payload;

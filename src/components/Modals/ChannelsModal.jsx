@@ -88,7 +88,7 @@ const ChannelsModal = ({
           </Modal.Body>
           <Modal.Footer>
             <Button variant="secondary" onClick={handleClose}>
-              Отменить
+              {t('channelsList.modal.cancelButton')}
             </Button>
             <Button
               variant={values.buttonClass}
