@@ -57,11 +57,9 @@ const Login = (props) => {
         }
       }}
     >
-      {(
-        {
-          handleSubmit, handleChange, errors, values,
-        },
-      ) => (
+      {({
+        handleSubmit, handleChange, errors, values,
+      }) => (
         <Container fluid className="h-100">
           <div className="row justify-content-center align-content-center h-100">
             <div className="col-12 col-md-8 col-xxl-6">
@@ -74,53 +72,48 @@ const Login = (props) => {
                     onSubmit={handleSubmit}
                     className="col-12 col-md-6 mt-3 mt-mb-0"
                   >
-                    <h1 className="text-center mb-4">{t('loginForm.welcomeHeader')}</h1>
-                    <Form.Group controlId="validationFormikUserName">
-                      <FloatingLabel
-                        controlId="username"
-                        label={t('loginForm.usernameLabel')}
-                        className="mb-4"
-                      >
-                        <Form.Control
-                          type="text"
-                          name="name"
-                          value={values.name}
-                          onChange={handleChange}
-                          isInvalid={errors.name || authFailed}
-                          placeholder="username"
-                        />
-                        <Form.Control.Feedback type="invalid">
-                          {errors.name}
-                        </Form.Control.Feedback>
-                      </FloatingLabel>
-                    </Form.Group>
-
-                    <Form.Group
-                      controlId="validationFormikPassword"
+                    <h1 className="text-center mb-4">
+                      {t('loginForm.welcomeHeader')}
+                    </h1>
+                    <FloatingLabel
+                      controlId="username"
+                      label={t('loginForm.usernameLabel')}
                       className="mb-4"
                     >
-                      <FloatingLabel
-                        controlId="password"
-                        label={t('loginForm.passwordLabel')}
-                      >
-                        <Form.Control
-                          type="password"
-                          name="password"
-                          value={values.password}
-                          onChange={handleChange}
-                          isInvalid={errors.password || authFailed}
-                          placeholder="password"
-                        />
-                        <Form.Control.Feedback type="invalid">
-                          {errors.password}
-                          {authFailed ? t('loginForm.errors.userNotExist') : null}
-                        </Form.Control.Feedback>
-                      </FloatingLabel>
-                    </Form.Group>
+                      <Form.Control
+                        type="text"
+                        name="name"
+                        value={values.name}
+                        onChange={handleChange}
+                        isInvalid={errors.name || authFailed}
+                        placeholder="username"
+                      />
+                      <Form.Control.Feedback type="invalid">
+                        {errors.name}
+                      </Form.Control.Feedback>
+                    </FloatingLabel>
+                    <FloatingLabel
+                      controlId="password"
+                      label={t('loginForm.passwordLabel')}
+                      className="mb-4"
+                    >
+                      <Form.Control
+                        type="password"
+                        name="password"
+                        value={values.password}
+                        onChange={handleChange}
+                        isInvalid={errors.password || authFailed}
+                        placeholder="password"
+                      />
+                      <Form.Control.Feedback type="invalid">
+                        {errors.password}
+                        {authFailed ? t('loginForm.errors.userNotExist') : null}
+                      </Form.Control.Feedback>
+                    </FloatingLabel>
 
                     <Button
                       type="submit"
-                      className="w-100"
+                      className="w-100 mb-3"
                       variant="outline-primary"
                     >
                       {t('loginForm.login')}
@@ -131,7 +124,6 @@ const Login = (props) => {
                   <div className="text-center">
                     {t('loginForm.noAccount')}
                     <Link to="/signup">
-                      {' '}
                       {t('loginForm.registration')}
                     </Link>
                   </div>
