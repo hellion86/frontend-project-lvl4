@@ -130,7 +130,7 @@ const Login = (props) => {
                 <Card.Footer className="p-3">
                   <div className="text-center">
                     {t('loginForm.noAccount')}
-                    <Link to="/registration">
+                    <Link to="/signup">
                       {' '}
                       {t('loginForm.registration')}
                     </Link>

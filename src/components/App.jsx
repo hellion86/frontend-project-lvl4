@@ -41,7 +41,7 @@ const App = () => (
     </Navbar>
     <Routes>
       <Route path="/login" element={<Login />} />
-      <Route path="/registration" element={<Registration />} />
+      <Route path="/signup" element={<Registration />} />
       <Route path="*" element={<Page404 />} />
       <Route
         path="/"
