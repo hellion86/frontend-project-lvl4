@@ -3,14 +3,14 @@ export default {
     loginForm: {
       login: 'Войти',
       welcomeHeader: 'Войти',
-      usernameLabel: 'Имя пользователя',
+      usernameLabel: 'Ваш ник',
       passwordLabel: 'Пароль',
       noAccount: 'Нет аккаунта?',
       registration: 'Регистрация',
       errors: {
         nameRequired: 'Вы не ввели имя пользователя',
         passwordRequired: 'Вы не ввели пароль',
-        userNotExist: 'Такой пользователь не зарегистрирован',
+        userNotExist: 'Неверные имя пользователя или пароль',
       },
     },
     registrationForm: {
@@ -18,11 +18,13 @@ export default {
       usernameLabel: 'Имя пользователя',
       passwordLabel: 'Пароль',
       passwordConfirmLabel: 'Подтвердите пароль',
-      submitButton: 'Зерегистрироваться',
+      submitButton: 'Зарегистрироваться',
       errors: {
         nameRequired: 'Вы не ввели имя пользователя',
-        nameMinLength: 'Имя должно быть больше 6и символов',
+        nameMinLength: 'От 3 до 20 символов',
+        nameMaxLength: 'От 3 до 20 символов',
         passwordRequired: 'Вы не ввели пароль',
+        passwordMinLength: 'Не менее 6 символов',
         passwordConfirmRequired: 'Необходимо подтвердить пароль',
         oneOf: 'Пароли должны совпадать',
         userExist: 'Такой пользователь уже зарегистрирован',
@@ -84,7 +86,7 @@ export default {
     appErrors: {
       modal: {
         title: 'Что то пошло не так как задумывалось...',
-        failFetch: 'Ошибка загрузки данных, попробуйте обновить страницу...',
+        failFetch: 'Ошибка соединения',
       },
     },
   },

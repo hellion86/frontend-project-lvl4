@@ -26,14 +26,16 @@ const Registration = (props) => {
       oneOf: t('registrationForm.errors.oneOf'),
     },
     string: {
-      min: t('registrationForm.errors.nameMinLength'),
+      min: ({ path }) => t(`registrationForm.errors.${path}MinLength`),
+      max: t('registrationForm.errors.nameMaxLength'),
     },
   });
   const schema = Yup.object().shape({
     name: Yup.string()
       .required()
-      .min(6),
-    password: Yup.string().required(),
+      .min(3)
+      .max(20),
+    password: Yup.string().min(6).required(),
     passwordConfirm: Yup.string()
       .required()
       .oneOf([Yup.ref('password')]),
