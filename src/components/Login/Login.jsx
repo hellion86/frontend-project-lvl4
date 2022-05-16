@@ -77,7 +77,7 @@ const Login = (props) => {
                     <h1 className="text-center mb-4">{t('loginForm.welcomeHeader')}</h1>
                     <Form.Group controlId="validationFormikUserName">
                       <FloatingLabel
-                        controlId="floatingInputName"
+                        controlId="username"
                         label={t('loginForm.usernameLabel')}
                         className="mb-4"
                       >
@@ -100,7 +100,7 @@ const Login = (props) => {
                       className="mb-4"
                     >
                       <FloatingLabel
-                        controlId="floatingInputPassword"
+                        controlId="password"
                         label={t('loginForm.passwordLabel')}
                       >
                         <Form.Control

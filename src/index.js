@@ -5,16 +5,16 @@ import io from 'socket.io-client';
 import init from './init.jsx';
 import '../assets/application.scss';
 
-const runApp = async (s) => {
+const runApp = async () => {
   // console.log(s);
-  const app = await init(s);
+  const socket = io();
+  const app = await init(socket);
   // console.log(app);
   // const dom = document.getElementById('chat');
   // console.log(dom);
   ReactDOM.createRoot(document.getElementById('chat')).render(app);
 };
 
-const socket = io();
-runApp(socket);
+runApp();
 
 export default runApp;
