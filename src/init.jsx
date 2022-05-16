@@ -11,7 +11,7 @@ import App from './components/App.jsx';
 import ContentProvider from './contexts/Content.jsx';
 import AuthProvider from './contexts/Auth.jsx';
 
-const init = async () => {
+const init = async (socket) => {
   const i18nextInstance = i18n.createInstance();
   await i18nextInstance.use(initReactI18next).init({
     resources: {
@@ -28,7 +28,7 @@ const init = async () => {
     environment: 'production',
   };
 
-  const socket = io();
+  // const socket = io();
 
   return (
     <ReactRedux.Provider store={store}>
