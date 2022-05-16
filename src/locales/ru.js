@@ -34,6 +34,9 @@ export default {
       errors: {
         sendError: 'Не удалось отправить сообщение, повторите попытку позже...',
       },
+      sendForm: {
+        mainInput: 'Новое сообщение',
+      },
     },
     channelsList: {
       header: 'Каналы',

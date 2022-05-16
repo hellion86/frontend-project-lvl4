@@ -42,6 +42,7 @@ const SendForm = ({
                 name="textMessage"
                 type="text"
                 className="border-0 p-1 ps-3 m-1 form-control"
+                label={t('chatMessages.sendForm.mainInput')}
               />
               <button
                 type="submit"

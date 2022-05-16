@@ -5,6 +5,7 @@ import {
   Route,
   Navigate,
   useLocation,
+  Outlet,
 } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Navbar, Button, Container } from 'react-bootstrap';
@@ -14,17 +15,26 @@ import Registration from './Registration/Registration.jsx';
 import Chat from './Chat/Chat.jsx';
 import useAuth from '../hooks/useAuth.jsx';
 
-const PrivateRoute = ({ children }) => {
+// const PrivateRoute = ({ children }) => {
+//   const auth = useAuth();
+//   const location = useLocation();
+
+//   return auth.loggedIn ? (
+//     children
+//   ) : (
+//     <Navigate to="/login" state={{ from: location }} />
+//   );
+// };
+
+const PrivateRoute = () => {
   const auth = useAuth();
-  const location = useLocation();
 
   return auth.loggedIn ? (
-    children
+    <Outlet />
   ) : (
-    <Navigate to="/login" state={{ from: location }} />
+    <Navigate to="/login" />
   );
 };
-
 const LogOutButton = () => {
   const { t } = useTranslation();
   const auth = useAuth();
@@ -43,14 +53,9 @@ const App = () => (
       <Route path="/login" element={<Login />} />
       <Route path="/signup" element={<Registration />} />
       <Route path="*" element={<Page404 />} />
-      <Route
-        path="/"
-        element={(
-          <PrivateRoute>
-            <Chat />
-          </PrivateRoute>
-        )}
-      />
+      <Route path="/" element={<PrivateRoute />}>
+        <Route path="" element={<Chat />} />
+      </Route>
     </Routes>
   </div>
 );

@@ -94,71 +94,61 @@ const Registration = (props) => {
                     className="col-12 col-md-6 mt-3 mt-mb-0"
                   >
                     <h1 className="text-center mb-4">{t('registrationForm.welcomeHeader')}</h1>
-                    <Form.Group controlId="validationFormikUserName">
-                      <FloatingLabel
-                        controlId="floatingInputName"
-                        label={t('registrationForm.usernameLabel')}
-                        className="mb-4"
-                      >
-                        <Form.Control
-                          type="text"
-                          name="name"
-                          value={values.name}
-                          onBlur={handleBlur}
-                          onChange={handleChange}
-                          isInvalid={errors.name || authFailed}
-                          placeholder={t('registrationForm.usernameLabel')}
-                        />
-                        <Form.Control.Feedback type="invalid">
-                          {touched.name && errors.name}
-                        </Form.Control.Feedback>
-                      </FloatingLabel>
-                    </Form.Group>
-                    <Form.Group
-                      controlId="validationFormikPassword"
+                    <FloatingLabel
+                      controlId="floatingInputName"
+                      label={t('registrationForm.usernameLabel')}
                       className="mb-4"
                     >
-                      <FloatingLabel
-                        controlId="floatingInputPassword"
-                        label={t('registrationForm.passwordLabel')}
-                      >
-                        <Form.Control
-                          type="password"
-                          name="password"
-                          value={values.password}
-                          onBlur={handleBlur}
-                          onChange={handleChange}
-                          isInvalid={errors.password || authFailed}
-                          placeholder={t('registrationForm.passwordLabel')}
-                        />
-                        <Form.Control.Feedback type="invalid">
-                          {touched.password && errors.password}
-                        </Form.Control.Feedback>
-                      </FloatingLabel>
-                    </Form.Group>
-                    <Form.Group
+                      <Form.Control
+                        type="text"
+                        name="name"
+                        value={values.name}
+                        onBlur={handleBlur}
+                        onChange={handleChange}
+                        isInvalid={errors.name || authFailed}
+                        placeholder={t('registrationForm.usernameLabel')}
+                      />
+                      <Form.Control.Feedback type="invalid">
+                        {touched.name && errors.name}
+                      </Form.Control.Feedback>
+                    </FloatingLabel>
+                    <FloatingLabel
+                      controlId="floatingInputPassword"
+                      label={t('registrationForm.passwordLabel')}
+                      className="mb-4"
+                    >
+                      <Form.Control
+                        type="password"
+                        name="password"
+                        value={values.password}
+                        onBlur={handleBlur}
+                        onChange={handleChange}
+                        isInvalid={errors.password || authFailed}
+                        placeholder={t('registrationForm.passwordLabel')}
+                      />
+                      <Form.Control.Feedback type="invalid">
+                        {touched.password && errors.password}
+                      </Form.Control.Feedback>
+                    </FloatingLabel>
+                    <FloatingLabel
                       controlId="validationFormikPasswordConfirm"
+                      label={t('registrationForm.passwordConfirmLabel')}
                       className="mb-4"
                     >
-                      <FloatingLabel
-                        controlId="validationFormikPasswordConfirm"
-                        label={t('registrationForm.passwordConfirmLabel')}
-                      >
-                        <Form.Control
-                          type="password"
-                          name="passwordConfirm"
-                          value={values.passwordConfirm}
-                          onBlur={handleBlur}
-                          onChange={handleChange}
-                          isInvalid={errors.passwordConfirm || authFailed}
-                          placeholder={t('registrationForm.passwordConfirmLabel')}
-                        />
-                        <Form.Control.Feedback type="invalid">
-                          {touched.passwordConfirm && errors.passwordConfirm}
-                          {authFailed ? t('registrationForm.errors.userExist') : null}
-                        </Form.Control.Feedback>
-                      </FloatingLabel>
-                    </Form.Group>
+                      <Form.Control
+                        type="password"
+                        name="passwordConfirm"
+                        value={values.passwordConfirm}
+                        onBlur={handleBlur}
+                        onChange={handleChange}
+                        isInvalid={errors.passwordConfirm || authFailed}
+                        placeholder={t('registrationForm.passwordConfirmLabel')}
+                      />
+                      <Form.Control.Feedback type="invalid">
+                        {touched.passwordConfirm && errors.passwordConfirm}
+                        {authFailed ? t('registrationForm.errors.userExist') : null}
+                      </Form.Control.Feedback>
+                    </FloatingLabel>
                     <Button
                       type="submit"
                       className="w-100"
