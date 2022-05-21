@@ -3,6 +3,7 @@
 /* eslint-disable react/function-component-definition */
 import React from 'react';
 import { Link } from 'react-router-dom';
+import routes from '../../../server/routes.js';
 import registrationImage from '../../../assets/image/registrationPage.jpg';
 
 const Page404 = () => {
@@ -11,7 +12,7 @@ const Page404 = () => {
       <img src={registrationImage} />
       <h1 className="h4 text-muted">Страница не найдена</h1>
       <p className="text-muted">Но вы можете перейти </p>
-      <Link to="/">на главную страницу</Link>
+      <Link to={routes.chatPage()}>на главную страницу</Link>
     </div>
   );
 };

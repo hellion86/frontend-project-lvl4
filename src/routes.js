@@ -13,4 +13,7 @@ export default {
   channelPath: (id) => [host, prefix, 'channels', id].join('/'),
   errorPath: () => [errorHost, prefix, 'channels'].join('/'),
   channelMessagesPath: (id) => [host, prefix, 'channels', id, 'messages'].join('/'),
+  loginPage: () => [host, 'login'].join('/'),
+  signupPage: () => [host, 'signup'].join('/'),
+  chatPage: () => [host, '/'].join(''),
 };

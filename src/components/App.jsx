@@ -5,7 +5,6 @@ import {
   Route,
   Navigate,
   useLocation,
-  Outlet,
 } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Navbar, Button, Container } from 'react-bootstrap';
@@ -14,27 +13,20 @@ import Page404 from './404/Page404.jsx';
 import Registration from './Registration/Registration.jsx';
 import Chat from './Chat/Chat.jsx';
 import useAuth from '../hooks/useAuth.jsx';
+import routes from '../routes.js';
 
-// const PrivateRoute = ({ children }) => {
-//   const auth = useAuth();
-//   const location = useLocation();
-
-//   return auth.loggedIn ? (
-//     children
-//   ) : (
-//     <Navigate to="/login" state={{ from: location }} />
-//   );
-// };
-
-const PrivateRoute = () => {
+console.log(routes.chatPage());
+const PrivateRoute = ({ children }) => {
   const auth = useAuth();
+  const location = useLocation();
 
   return auth.loggedIn ? (
-    <Outlet />
+    children
   ) : (
-    <Navigate to="/login" />
+    <Navigate to="/login" state={{ from: location }} />
   );
 };
+
 const LogOutButton = () => {
   const { t } = useTranslation();
   const auth = useAuth();
@@ -50,12 +42,17 @@ const App = () => (
       </Container>
     </Navbar>
     <Routes>
-      <Route path="/login" element={<Login />} />
-      <Route path="/signup" element={<Registration />} />
+      <Route path={routes.loginPage()} element={<Login />} />
+      <Route path={routes.signupPage()} element={<Registration />} />
       <Route path="*" element={<Page404 />} />
-      <Route path="/" element={<PrivateRoute />}>
-        <Route path="" element={<Chat />} />
-      </Route>
+      <Route
+        path={routes.chatPage()}
+        element={(
+          <PrivateRoute>
+            <Chat />
+          </PrivateRoute>
+        )}
+      />
     </Routes>
   </div>
 );

@@ -123,7 +123,7 @@ const Login = (props) => {
                 <Card.Footer className="p-3">
                   <div className="text-center">
                     {t('loginForm.noAccount')}
-                    <Link to="/signup">
+                    <Link to={routes.signupPage()}>
                       {t('loginForm.registration')}
                     </Link>
                   </div>
