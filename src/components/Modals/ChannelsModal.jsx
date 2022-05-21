@@ -6,7 +6,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Modal, Form, Button } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { ToastContainer, toast } from 'react-toastify';
-import { prepareStateFormik, validateSchema } from './modalUtils.js';
+import { prepareStateFormik, validateSchema, modalMapper } from './modalUtils.js';
 import { actions as channelsAction } from '../../slices/channelsSlice.js';
 import chatApiContext from '../../hooks/useContent.jsx';
 
@@ -29,35 +29,25 @@ const ChannelsModal = ({ handleClose, channelsList, modalData }) => {
           modalData.channelName,
         )}
         onSubmit={async (values, actions) => {
+          const modalHandler = modalMapper(
+            content,
+            modalData.id,
+            dispatch,
+            values.channelName,
+            channelsAction,
+            values.action,
+          );
           if (values.action === 'remove') {
-            content.socket.emit('removeChannel', { id: modalData.id });
+            modalHandler();
             handleClose();
-            notify(t('toast.remove'));
+            notify(t(`toast.${values.action}`));
           }
           try {
             await channelSchema.validate({
               channelName: values.channelName,
             });
-            if (values.action === 'add') {
-              content.socket.emit(
-                'newChannel',
-                { name: values.channelName },
-                (response) => {
-                  const { data } = response;
-                  if (response.status === 'ok') {
-                    dispatch(channelsAction.setCurrentChannel({ id: data.id, name: data.name }));
-                  }
-                },
-              );
-              notify(t('toast.add'));
-            }
-            if (values.action === 'rename') {
-              content.socket.emit('renameChannel', {
-                id: modalData.id,
-                name: values.channelName,
-              });
-              notify(t('toast.rename'));
-            }
+            modalHandler();
+            notify(t(`toast.${values.action}`));
             setErr('');
             actions.resetForm({ values: '' });
             handleClose();

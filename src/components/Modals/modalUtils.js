@@ -1,6 +1,37 @@
 import * as Yup from 'yup';
 import { useTranslation } from 'react-i18next';
 
+const modalMapper = (content, id, dispatch, channelName, channelsAction, type) => {
+  const action = {
+    remove: () => {
+      console.log('mapper remove work');
+      content.socket.emit('removeChannel', { id });
+    },
+    add: () => {
+      console.log('add mapper work');
+      console.log(channelName);
+      content.socket.emit(
+        'newChannel',
+        { name: channelName },
+        (response) => {
+          const { data } = response;
+          console.log(data);
+          if (response.status === 'ok') {
+            dispatch(channelsAction.setCurrentChannel({ id: data.id, name: data.name }));
+          }
+        },
+      );
+    },
+    rename: () => {
+      content.socket.emit('renameChannel', {
+        id,
+        name: channelName,
+      });
+    },
+  };
+  return action[type];
+};
+
 const prepareStateFormik = (action, channelName) => {
   const { t } = useTranslation();
   const types = {
@@ -56,4 +87,4 @@ const validateSchema = (channelsList) => {
       .notOneOf([channelsList.map((channel) => channel.name)]),
   });
 };
-export { validateSchema, prepareStateFormik };
+export { validateSchema, prepareStateFormik, modalMapper };

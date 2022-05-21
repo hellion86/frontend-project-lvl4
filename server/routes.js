@@ -20,7 +20,7 @@ const buildState = (defaultState) => {
     users: [
       { id: 1, username: 'admin', password: 'admin' },
       { id: 2, username: '123', password: '123' },
-      { id: 3, username: 'Olga', password: '123' },
+      { id: 3, username: '222', password: '123' },
     ],
   };
 
