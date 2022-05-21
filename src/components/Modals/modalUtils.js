@@ -3,19 +3,13 @@ import { useTranslation } from 'react-i18next';
 
 const modalMapper = (content, id, dispatch, channelName, channelsAction, type) => {
   const action = {
-    remove: () => {
-      console.log('mapper remove work');
-      content.socket.emit('removeChannel', { id });
-    },
+    remove: () => content.socket.emit('removeChannel', { id }),
     add: () => {
-      console.log('add mapper work');
-      console.log(channelName);
       content.socket.emit(
         'newChannel',
         { name: channelName },
         (response) => {
           const { data } = response;
-          console.log(data);
           if (response.status === 'ok') {
             dispatch(channelsAction.setCurrentChannel({ id: data.id, name: data.name }));
           }
