@@ -2,6 +2,6 @@ import { useContext } from 'react';
 
 import { ContentContext } from '../contexts/Content.jsx';
 
-const useCon = () => useContext(ContentContext);
+const chatApiContext = () => useContext(ContentContext);
 
-export default useCon;
+export default chatApiContext;

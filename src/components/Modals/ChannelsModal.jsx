@@ -8,11 +8,11 @@ import { useTranslation } from 'react-i18next';
 import { ToastContainer, toast } from 'react-toastify';
 import { prepareStateFormik, validateSchema } from './modalUtils.js';
 import { actions as channelsAction } from '../../slices/channelsSlice.js';
-import useCon from '../../hooks/useContent.jsx';
+import chatApiContext from '../../hooks/useContent.jsx';
 
 const ChannelsModal = ({ handleClose, channelsList, modalData }) => {
   const { t } = useTranslation();
-  const content = useCon();
+  const content = chatApiContext();
   const inputRef = useRef();
   const dispatch = useDispatch();
   const channelSchema = validateSchema(channelsList);
