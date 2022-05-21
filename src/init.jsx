@@ -4,7 +4,7 @@ import * as ReactRedux from 'react-redux';
 import { I18nextProvider, initReactI18next } from 'react-i18next';
 import { BrowserRouter } from 'react-router-dom';
 import i18n from 'i18next';
-// import io from 'socket.io-client';
+import * as filter from 'leo-profanity';
 import ru from './locales/ru.js';
 import store from './slices/index.js';
 import App from './components/App.jsx';
@@ -28,7 +28,7 @@ const init = async (socket) => {
     environment: 'production',
   };
 
-  // const socket = io();
+  filter.add(filter.getDictionary('ru'));
 
   return (
     <ReactRedux.Provider store={store}>

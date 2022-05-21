@@ -11,9 +11,14 @@ const AuthProvider = ({ children }) => {
     localStorage.removeItem('userId');
     setLoggedIn(false);
   };
+  const setUserToLocalStorage = (data) => localStorage.setItem('userId', JSON.stringify(data));
+
   return (
     // eslint-disable-next-line react/jsx-no-constructed-context-values
-    <AuthContext.Provider value={{ loggedIn, logIn, logOut }}>
+    <AuthContext.Provider value={{
+      loggedIn, logIn, logOut, setUserToLocalStorage,
+    }}
+    >
       {children}
     </AuthContext.Provider>
   );

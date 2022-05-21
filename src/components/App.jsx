@@ -15,7 +15,6 @@ import Chat from './Chat/Chat.jsx';
 import useAuth from '../hooks/useAuth.jsx';
 import routes from '../routes.js';
 
-console.log(routes.chatPage());
 const PrivateRoute = ({ children }) => {
   const auth = useAuth();
   const location = useLocation();
@@ -44,7 +43,7 @@ const App = () => (
     <Routes>
       <Route path={routes.loginPage()} element={<Login />} />
       <Route path={routes.signupPage()} element={<Registration />} />
-      <Route path="*" element={<Page404 />} />
+      <Route path={routes.anyPath()} element={<Page404 />} />
       <Route
         path={routes.chatPage()}
         element={(

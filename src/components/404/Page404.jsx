@@ -3,7 +3,7 @@
 /* eslint-disable react/function-component-definition */
 import React from 'react';
 import { Link } from 'react-router-dom';
-import routes from '../../../server/routes.js';
+import routes from '../../routes.js';
 import registrationImage from '../../../assets/image/registrationPage.jpg';
 
 const Page404 = () => {

@@ -10,7 +10,6 @@ import useCon from '../../hooks/useContent.jsx';
 const SendForm = ({
   username, currentChannel,
 }) => {
-  filter.add(filter.getDictionary('ru'));
   const { t } = useTranslation();
   const [messageSent, setMesssageSent] = useState(false);
   const content = useCon();
