@@ -22,7 +22,7 @@ const Login = (props) => {
 
   Yup.setLocale({
     mixed: {
-      required: ({ path }) => t(`loginForm.errors.${path}Required`),
+      required: ({ path }) => `loginForm.errors.${path}Required`,
     },
   });
   const schema = Yup.object().shape({
@@ -89,7 +89,7 @@ const Login = (props) => {
                         placeholder="username"
                       />
                       <Form.Control.Feedback type="invalid">
-                        {errors.name}
+                        {t(`${errors.name}`)}
                       </Form.Control.Feedback>
                     </FloatingLabel>
                     <FloatingLabel
@@ -106,7 +106,7 @@ const Login = (props) => {
                         placeholder="password"
                       />
                       <Form.Control.Feedback type="invalid">
-                        {errors.password}
+                        {t(`${errors.password}`)}
                         {authFailed ? t('loginForm.errors.userNotExist') : null}
                       </Form.Control.Feedback>
                     </FloatingLabel>

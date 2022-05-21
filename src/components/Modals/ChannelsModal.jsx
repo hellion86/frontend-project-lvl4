@@ -85,7 +85,7 @@ const ChannelsModal = ({ handleClose, channelsList, modalData }) => {
                       isInvalid={err}
                     />
                     <Form.Control.Feedback type="invalid">
-                      {err}
+                      {t(`${err}`)}
                     </Form.Control.Feedback>
                   </Form.Group>
                 ) : (

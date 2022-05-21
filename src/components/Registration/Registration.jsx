@@ -22,12 +22,12 @@ const Registration = (props) => {
   const [authFailed, setAuthFailed] = useState(false);
   Yup.setLocale({
     mixed: {
-      required: ({ path }) => t(`registrationForm.errors.${path}Required`),
-      oneOf: t('registrationForm.errors.oneOf'),
+      required: ({ path }) => `registrationForm.errors.${path}Required`,
+      oneOf: 'registrationForm.errors.oneOf',
     },
     string: {
-      min: ({ path }) => t(`registrationForm.errors.${path}MinLength`),
-      max: t('registrationForm.errors.nameMaxLength'),
+      min: ({ path }) => `registrationForm.errors.${path}MinLength`,
+      max: 'registrationForm.errors.nameMaxLength',
     },
   });
   const schema = Yup.object().shape({
@@ -109,7 +109,7 @@ const Registration = (props) => {
                         placeholder={t('registrationForm.usernameLabel')}
                       />
                       <Form.Control.Feedback type="invalid">
-                        {touched.name && errors.name}
+                        {touched.name && t(`${errors.name}`)}
                       </Form.Control.Feedback>
                     </FloatingLabel>
                     <FloatingLabel
@@ -127,7 +127,7 @@ const Registration = (props) => {
                         placeholder={t('registrationForm.passwordLabel')}
                       />
                       <Form.Control.Feedback type="invalid">
-                        {touched.password && errors.password}
+                        {touched.password && t(`${errors.password}`)}
                       </Form.Control.Feedback>
                     </FloatingLabel>
                     <FloatingLabel
@@ -145,7 +145,7 @@ const Registration = (props) => {
                         placeholder={t('registrationForm.passwordConfirmLabel')}
                       />
                       <Form.Control.Feedback type="invalid">
-                        {touched.passwordConfirm && errors.passwordConfirm}
+                        {touched.passwordConfirm && t(`${errors.passwordConfirm}`)}
                         {authFailed ? t('registrationForm.errors.userExist') : null}
                       </Form.Control.Feedback>
                     </FloatingLabel>

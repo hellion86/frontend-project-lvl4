@@ -37,15 +37,14 @@ const prepareStateFormik = (action, channelName) => {
 };
 
 const validateSchema = (channelsList) => {
-  const { t } = useTranslation();
   Yup.setLocale({
     mixed: {
-      required: t('channelsList.modal.errors.emptyField'),
-      notOneOf: t('channelsList.modal.errors.noOneOf'),
+      required: 'channelsList.modal.errors.emptyField',
+      notOneOf: 'channelsList.modal.errors.noOneOf',
     },
     string: {
-      min: t('channelsList.modal.errors.minLength'),
-      max: t('channelsList.modal.errors.maxLength'),
+      min: 'channelsList.modal.errors.minLength',
+      max: 'channelsList.modal.errors.maxLength',
     },
   });
 
