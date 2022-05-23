@@ -6,6 +6,7 @@ import init from './init.jsx';
 import '../assets/application.scss';
 
 const runApp = async () => {
+  // eslint-disable-next-line no-undef
   const socket = io();
   const app = await init(socket);
   ReactDOM.createRoot(document.getElementById('chat')).render(app);

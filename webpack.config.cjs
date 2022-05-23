@@ -1,10 +1,12 @@
+/* eslint-disable import/no-extraneous-dependencies */
 // @ts-check
 
 const path = require('path');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const webpack = require('webpack');
 
 const mode = process.env.NODE_ENV || 'development';
-
+// const mode = 'production';
 module.exports = {
   mode,
   resolve: {
@@ -23,6 +25,10 @@ module.exports = {
   },
   plugins: [
     new MiniCssExtractPlugin(),
+    new webpack.DefinePlugin({
+      __TOKEN__: JSON.stringify('bbbe6095f5444200bc897416f11f6b9f'),
+      'process.env': JSON.stringify(process.env),
+    }),
   ],
   devtool: 'eval-source-map',
   module: {
