@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-no-constructed-context-values */
 /* eslint-disable react/function-component-definition */
 import React, { createContext } from 'react';
 import { useDispatch } from 'react-redux';
@@ -26,9 +27,40 @@ const ContentProvider = ({ children, socket }) => {
     dispatch(channelsAction.removeChannel(msg.id));
   });
 
+  const addChannel = (name) => {
+    socket.emit('newChannel', { name }, (resp) => {
+      const { data } = resp;
+      if (resp.status === 'ok') {
+        dispatch(channelsAction.setCurrentChannel({ id: data.id, name: data.name }));
+      }
+    });
+  };
+
+  const renameChannel = (id, name) => socket.emit('renameChannel', { id, name });
+
+  const removeChannel = (id) => socket.emit('removeChannel', { id });
+
+  const newMessage = (textMessage, author, channelId, cb) => {
+    socket.emit('newMessage', { textMessage, author, channelId }, (resp) => {
+      if (resp.status !== 'ok') {
+        cb(true);
+      } else {
+        cb(false);
+      }
+    });
+  };
+
   return (
     // eslint-disable-next-line react/jsx-no-constructed-context-values
-    <ContentContext.Provider value={{ socket }}>
+    <ContentContext.Provider
+      value={{
+        socket,
+        removeChannel,
+        newMessage,
+        renameChannel,
+        addChannel,
+      }}
+    >
       {children}
     </ContentContext.Provider>
   );

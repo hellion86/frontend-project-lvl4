@@ -1,20 +1,17 @@
 /* eslint-disable object-curly-newline */
 /* eslint-disable react/function-component-definition */
 import { Formik } from 'formik';
-import { useDispatch } from 'react-redux';
 import React, { useState, useEffect, useRef } from 'react';
 import { Modal, Form, Button } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { ToastContainer, toast } from 'react-toastify';
 import { prepareStateFormik, validateSchema, modalMapper } from './modalUtils.js';
-import { actions as channelsAction } from '../../slices/channelsSlice.js';
 import chatApiContext from '../../hooks/useContent.jsx';
 
 const ChannelsModal = ({ handleClose, channelsList, modalData }) => {
   const { t } = useTranslation();
   const content = chatApiContext();
   const inputRef = useRef();
-  const dispatch = useDispatch();
   const channelSchema = validateSchema(channelsList);
   const [err, setErr] = useState('');
   const notify = (msg) => toast.success(msg);
@@ -32,9 +29,7 @@ const ChannelsModal = ({ handleClose, channelsList, modalData }) => {
           const modalHandler = modalMapper(
             content,
             modalData.id,
-            dispatch,
             values.channelName,
-            channelsAction,
             values.action,
           );
           if (values.action === 'remove') {

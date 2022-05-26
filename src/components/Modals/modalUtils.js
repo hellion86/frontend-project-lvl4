@@ -1,27 +1,11 @@
 import * as Yup from 'yup';
 import { useTranslation } from 'react-i18next';
 
-const modalMapper = (content, id, dispatch, channelName, channelsAction, type) => {
+const modalMapper = (content, id, channelName, type) => {
   const action = {
-    remove: () => content.socket.emit('removeChannel', { id }),
-    add: () => {
-      content.socket.emit(
-        'newChannel',
-        { name: channelName },
-        (response) => {
-          const { data } = response;
-          if (response.status === 'ok') {
-            dispatch(channelsAction.setCurrentChannel({ id: data.id, name: data.name }));
-          }
-        },
-      );
-    },
-    rename: () => {
-      content.socket.emit('renameChannel', {
-        id,
-        name: channelName,
-      });
-    },
+    remove: () => content.removeChannel(id),
+    add: () => content.addChannel(channelName),
+    rename: () => content.renameChannel(id, channelName),
   };
   return action[type];
 };
@@ -29,21 +13,9 @@ const modalMapper = (content, id, dispatch, channelName, channelsAction, type) =
 const prepareStateFormik = (action, channelName) => {
   const { t } = useTranslation();
   const types = {
-    buttonText: {
-      add: t('channelsList.modal.add.button'),
-      rename: t('channelsList.modal.rename.button'),
-      remove: t('channelsList.modal.remove.button'),
-    },
-    headerText: {
-      add: t('channelsList.modal.add.header'),
-      rename: t('channelsList.modal.rename.header'),
-      remove: t('channelsList.modal.remove.header'),
-    },
-    placeHolderText: {
-      add: t('channelsList.modal.add.holderText'),
-      rename: t('channelsList.modal.rename.holderText'),
-      remove: t('channelsList.modal.remove.holderText'),
-    },
+    buttonText: t(`channelsList.modal.${action}.button`),
+    headerText: t(`channelsList.modal.${action}.header`),
+    placeHolderText: t(`channelsList.modal.${action}.holderText`),
     buttonClass: {
       add: 'primary',
       rename: 'primary',
@@ -54,9 +26,9 @@ const prepareStateFormik = (action, channelName) => {
   return {
     action,
     channelName,
-    placeHolderText: types.placeHolderText[action],
-    headerText: types.headerText[action],
-    buttonText: types.buttonText[action],
+    placeHolderText: types.placeHolderText,
+    headerText: types.headerText,
+    buttonText: types.buttonText,
     buttonClass: types.buttonClass[action],
   };
 };

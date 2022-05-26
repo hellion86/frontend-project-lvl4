@@ -20,18 +20,10 @@ const SendForm = ({
         initialValues={{ textMessage: '' }}
         onSubmit={(values, actions) => {
           const text = filter.clean(values.textMessage);
-          content.socket.emit(
-            'newMessage',
-            { textMessage: text, author: username, channelId: currentChannel.id },
-            (response) => {
-              if (response.status !== 'ok') {
-                setMesssageSent(true);
-              } else {
-                setMesssageSent(false);
-                actions.resetForm({ values: '' });
-              }
-            },
-          );
+          content.newMessage(text, username, currentChannel.id, setMesssageSent);
+          if (!messageSent) {
+            actions.resetForm({ values: '' });
+          }
         }}
       >
         {({ values }) => (
