@@ -89,7 +89,7 @@ const Login = (props) => {
                         placeholder="username"
                       />
                       <Form.Control.Feedback type="invalid">
-                        {t(`${errors.name}`)}
+                        {authFailed ? null : t(`${errors.name}`)}
                       </Form.Control.Feedback>
                     </FloatingLabel>
                     <FloatingLabel
@@ -106,8 +106,7 @@ const Login = (props) => {
                         placeholder="password"
                       />
                       <Form.Control.Feedback type="invalid">
-                        {t(`${errors.password}`)}
-                        {authFailed ? t('loginForm.errors.userNotExist') : null}
+                        {authFailed ? t('loginForm.errors.userNotExist') : t(`${errors.password}`)}
                       </Form.Control.Feedback>
                     </FloatingLabel>
 

@@ -64,7 +64,6 @@ const Registration = (props) => {
         } catch (err) {
           if (err.isAxiosError && err.response.status === 409) {
             setAuthFailed(true);
-            console.log(err);
             return;
           }
           throw err;
@@ -109,7 +108,7 @@ const Registration = (props) => {
                         placeholder={t('registrationForm.usernameLabel')}
                       />
                       <Form.Control.Feedback type="invalid">
-                        {touched.name && t(`${errors.name}`)}
+                        { authFailed ? null : touched.name && t(`${errors.name}`)}
                       </Form.Control.Feedback>
                     </FloatingLabel>
                     <FloatingLabel
@@ -127,7 +126,7 @@ const Registration = (props) => {
                         placeholder={t('registrationForm.passwordLabel')}
                       />
                       <Form.Control.Feedback type="invalid">
-                        {touched.password && t(`${errors.password}`)}
+                        {authFailed ? null : touched.password && t(`${errors.password}`)}
                       </Form.Control.Feedback>
                     </FloatingLabel>
                     <FloatingLabel
@@ -145,8 +144,7 @@ const Registration = (props) => {
                         placeholder={t('registrationForm.passwordConfirmLabel')}
                       />
                       <Form.Control.Feedback type="invalid">
-                        {touched.passwordConfirm && t(`${errors.passwordConfirm}`)}
-                        {authFailed ? t('registrationForm.errors.userExist') : null}
+                        {authFailed ? t('registrationForm.errors.userExist') : touched.passwordConfirm && t(`${errors.passwordConfirm}`)}
                       </Form.Control.Feedback>
                     </FloatingLabel>
                     <Button
