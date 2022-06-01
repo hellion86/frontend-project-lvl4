@@ -2,7 +2,7 @@
 /* eslint-disable react/function-component-definition */
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { Dropdown, Form, Button, ButtonGroup } from 'react-bootstrap';
+import { Dropdown, Button, ButtonGroup } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { actions as channelsAction } from '../../slices/channelsSlice.js';
 import ChannelsModal from '../Modals/ChannelsModal.jsx';
@@ -87,8 +87,9 @@ const Channels = ({
                     split
                     variant={active(channel.id)}
                     id="dropdown-split-basic"
-                    text={t('channelsList.handleChannels')}
-                  />
+                  >
+                    <span className="visually-hidden">{t('channelsList.handleChannels')}</span>
+                  </Dropdown.Toggle>
                   <Dropdown.Menu>
                     <Dropdown.Item
                       onClick={() => handleShow(channel.id, 'remove', channel.name)}
