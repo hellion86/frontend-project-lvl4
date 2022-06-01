@@ -122,6 +122,7 @@ const Login = (props) => {
                 <Card.Footer className="p-3">
                   <div className="text-center">
                     {t('loginForm.noAccount')}
+                    {' '}
                     <Link to={routes.signupPage()}>
                       {t('loginForm.registration')}
                     </Link>
