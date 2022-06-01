@@ -83,8 +83,8 @@ export default {
       },
     },
     toast: {
-      remove: 'Канал удален',
-      add: 'Создан новый канал',
+      remove: 'Канал удалён',
+      add: 'Канал создан',
       rename: 'Канал переименован',
     },
     appErrors: {
