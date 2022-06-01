@@ -87,6 +87,7 @@ const Channels = ({
                     split
                     variant={active(channel.id)}
                     id="dropdown-split-basic"
+                    title={t('channelsList.handleChannels')}
                   />
                   <Dropdown.Menu>
                     <Dropdown.Item
