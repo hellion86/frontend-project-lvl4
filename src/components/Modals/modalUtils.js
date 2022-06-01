@@ -10,7 +10,7 @@ const modalMapper = (content, id, channelName, type) => {
   return action[type];
 };
 
-const prepareStateFormik = (action, channelName) => {
+const PrepareStateFormik = (action, channelName) => {
   const { t } = useTranslation();
   const types = {
     buttonText: t(`channelsList.modal.${action}.button`),
@@ -53,4 +53,4 @@ const validateSchema = (channelsList) => {
       .notOneOf([channelsList.map((channel) => channel.name)]),
   });
 };
-export { validateSchema, prepareStateFormik, modalMapper };
+export { validateSchema, PrepareStateFormik, modalMapper };

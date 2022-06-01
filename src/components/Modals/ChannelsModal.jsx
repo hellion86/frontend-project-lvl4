@@ -5,7 +5,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Modal, Form, Button } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { ToastContainer, toast } from 'react-toastify';
-import { prepareStateFormik, validateSchema, modalMapper } from './modalUtils.js';
+import { PrepareStateFormik, validateSchema, modalMapper } from './modalUtils.js';
 import chatApiContext from '../../hooks/useContent.jsx';
 
 const ChannelsModal = ({ handleClose, channelsList, modalData }) => {
@@ -21,7 +21,7 @@ const ChannelsModal = ({ handleClose, channelsList, modalData }) => {
   return (
     <>
       <Formik
-        initialValues={prepareStateFormik(
+        initialValues={PrepareStateFormik(
           modalData.type,
           modalData.channelName,
         )}
