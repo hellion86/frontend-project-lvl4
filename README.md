@@ -9,7 +9,7 @@ Hexlet chat is a simple analogue of Slack. You can create separate chat rooms, a
 
 The application interface is in Russian, but you can easily add your own language using the i18next library.
 
-## Requirements 
+## Requirements
 
 * [Heroku CLI](https://devcenter.heroku.com/articles/heroku-cli)
 
