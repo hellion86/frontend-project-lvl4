@@ -69,6 +69,7 @@ const ChannelsModal = ({ handleClose, channelsList, modalData }) => {
                       value={values.channelName}
                       isInvalid={err}
                     />
+                    <Form.Label className="visually-hidden">{t('channelsList.modal.hiddenSearch')}</Form.Label>
                     <Form.Control.Feedback type="invalid">
                       {t(`${err}`)}
                     </Form.Control.Feedback>

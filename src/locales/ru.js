@@ -44,6 +44,7 @@ export default {
       actionRename: 'Переименовать',
       modal: {
         cancelButton: 'Отменить',
+        hiddenSearch: 'Имя канала',
         add: {
           button: 'Отправить',
           header: 'Создать канал',
