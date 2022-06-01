@@ -6,11 +6,11 @@ import { Modal, Form, Button } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { ToastContainer, toast } from 'react-toastify';
 import { PrepareStateFormik, validateSchema, modalMapper } from './modalUtils.js';
-import chatApiContext from '../../hooks/useContent.jsx';
+import ChatApiContext from '../../hooks/useContent.jsx';
 
 const ChannelsModal = ({ handleClose, channelsList, modalData }) => {
   const { t } = useTranslation();
-  const content = chatApiContext();
+  const content = ChatApiContext();
   const inputRef = useRef();
   const channelSchema = validateSchema(channelsList);
   const [err, setErr] = useState('');

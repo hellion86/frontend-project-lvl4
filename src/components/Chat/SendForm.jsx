@@ -5,14 +5,14 @@ import { Formik, Field, Form } from 'formik';
 import { useTranslation } from 'react-i18next';
 import * as filter from 'leo-profanity';
 
-import chatApiContext from '../../hooks/useContent.jsx';
+import ChatApiContext from '../../hooks/useContent.jsx';
 
 const SendForm = ({
   username, currentChannel,
 }) => {
   const { t } = useTranslation();
   const [messageSent, setMesssageSent] = useState(false);
-  const content = chatApiContext();
+  const content = ChatApiContext();
 
   return (
     <div className="mt-auto px-5 py-3">
