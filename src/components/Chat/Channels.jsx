@@ -87,8 +87,8 @@ const Channels = ({
                     split
                     variant={active(channel.id)}
                     id="dropdown-split-basic"
+                    text={t('channelsList.handleChannels')}
                   />
-                  <Form.Text className="visually-hidden">{t('channelsList.handleChannels')}</Form.Text>
                   <Dropdown.Menu>
                     <Dropdown.Item
                       onClick={() => handleShow(channel.id, 'remove', channel.name)}
