@@ -63,6 +63,7 @@ const Channels = ({
                 fill="#4296FF"
               />
             </svg>
+            <span className="visually-hidden">+</span>
           </span>
         </button>
       </div>

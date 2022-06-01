@@ -5,27 +5,29 @@
 
 ## Description
 
-Hexlet chat is a simple analogue of Slack. You can create separate chat rooms, as well as rename and delete them.
+:speech_balloon:Hexlet chat is a simple analogue of Slack. You can create separate chat rooms, as well as rename and delete them.
 
 The application interface is in Russian, but you can easily add your own language using the i18next library.
 
-## Requirements
 
-* [Heroku CLI](https://devcenter.heroku.com/articles/heroku-cli)
+### 1. Install dependencies:
 
-## Install
-
-```sh
+```
 $ make install
 ```
-## Run
+### 2. Start project:
 
-```sh
+```
 $ make start
-# open http://localhost:5000
 ```
 
+App will start on localhost:5000
 
-## Heroku link
-
-[My app](https://rocky-headland-56319.herokuapp.com/)
+### Using
+* Webpack, Bootsrap
+* React + Redux Toolkit
+* Formik
+* React-Toastify
+* react-i18next
+* Validation (yup)
+* Deploy [Heroku](https://rocky-headland-56319.herokuapp.com/)
