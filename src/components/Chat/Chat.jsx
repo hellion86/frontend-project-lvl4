@@ -32,24 +32,12 @@ const Chat = () => {
       {channelsError || messageError ? notify() : null} 
       {status === 'loading' ? <Spinner animation="grow" /> :
       <div className="row h-100 bg-white flex-md-row">
-        <Channels
-        channelsList={channels}
-        currentChannel={currentChannel}
-        />
+        <Channels channelsList={channels} currentChannel={currentChannel} />
         <div className="col p-0 h-100">
           <div className="d-flex flex-column h-100">
-            <CurrentChannel
-              currentChannel={currentChannel}
-              messageNumber={messageNumber}
-              />
-            <Messages
-              messagesList={messages}
-              currentChannel={currentChannel}
-              />
-            <SendForm
-              username={username}
-              currentChannel={currentChannel}
-              />
+            <CurrentChannel currentChannel={currentChannel} messageNumber={messageNumber} />
+            <Messages messagesList={messages} currentChannel={currentChannel} />
+            <SendForm username={username} currentChannel={currentChannel} />
           </div>
         </div>
       </div>

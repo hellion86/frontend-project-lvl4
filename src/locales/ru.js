@@ -40,8 +40,8 @@ export default {
     },
     channelsList: {
       header: 'Каналы',
-      actionDelete: 'Удалить',
-      actionRename: 'Переименовать',
+      actionremove: 'Удалить',
+      actionrename: 'Переименовать',
       handleChannels: 'Управление каналом',
       modal: {
         cancelButton: 'Отменить',

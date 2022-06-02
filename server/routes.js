@@ -17,9 +17,7 @@ const buildState = (defaultState) => {
     ],
     messages: [],
     currentChannelId: generalChannelId,
-    users: [
-      { id: 1, username: 'admin', password: 'adadad' },
-    ],
+    users: [],
   };
   if (defaultState.messages) {
     state.messages.push(...defaultState.messages);

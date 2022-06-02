@@ -18,6 +18,7 @@ const Channels = ({
   const handleClose = () => setModal({ show: false, id: '', type: '', channelName: '' });
   const active = (id) => (id === currentChannel.id ? 'secondary' : '');
   const toggleChannel = (id, name) => dispatch(channelsAction.setCurrentChannel({ id, name }));
+  const dropActions = ['remove', 'rename'];
 
   const renderModal = (modalInfo) => {
     if (!modalInfo.show) {
@@ -91,16 +92,11 @@ const Channels = ({
                     <span className="visually-hidden">{t('channelsList.handleChannels')}</span>
                   </Dropdown.Toggle>
                   <Dropdown.Menu>
-                    <Dropdown.Item
-                      onClick={() => handleShow(channel.id, 'remove', channel.name)}
-                    >
-                      {t('channelsList.actionDelete')}
-                    </Dropdown.Item>
-                    <Dropdown.Item
-                      onClick={() => handleShow(channel.id, 'rename', channel.name)}
-                    >
-                      {t('channelsList.actionRename')}
-                    </Dropdown.Item>
+                    {dropActions.map((action) => (
+                      <Dropdown.Item onClick={() => handleShow(channel.id, action, channel.name)}>
+                        {t(`channelsList.action${action}`)}
+                      </Dropdown.Item>
+                    ))}
                   </Dropdown.Menu>
                 </>
               )}

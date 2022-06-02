@@ -13,13 +13,9 @@ import AuthProvider from './contexts/Auth.jsx';
 const init = async (socket, rollbarConfig) => {
   const i18nextInstance = i18n.createInstance();
   await i18nextInstance.use(initReactI18next).init({
-    resources: {
-      ru,
-    },
+    resources: { ru },
     lng: 'ru',
-    interpolation: {
-      escapeValue: false,
-    },
+    interpolation: { escapeValue: false },
   });
 
   return (
