@@ -3,14 +3,7 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 import { actions as channelActions } from './channelsSlice.js';
 import routes from '../routes.js';
-
-const getAuthHeader = () => {
-  const userId = JSON.parse(localStorage.getItem('userId'));
-  if (userId && userId.token) {
-    return { Authorization: `Bearer ${userId.token}` };
-  }
-  return {};
-};
+import getAuthHeader from './utils.js';
 
 export const fetchMessages = createAsyncThunk(
   'messagesList/fetchMessages',

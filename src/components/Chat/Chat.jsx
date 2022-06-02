@@ -21,12 +21,11 @@ const Chat = () => {
   const messageNumber = messages.filter((message) => message.channelId === currentChannel.id).length;
   const notify = () => toast.error(t('appErrors.modal.failFetch'))
 
-    useEffect(() => {
+  useEffect(() => {
     dispatch(fetchChannels());
     dispatch(fetchMessages());
     dispatch(channelsAction.setCurrentChannel({id: 1, name: 'general' }))
   }, [dispatch]);
-
 
   return (
     <div className="container h-100 my-4 overflow-hidden rounded shadow">

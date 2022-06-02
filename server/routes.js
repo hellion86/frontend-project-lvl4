@@ -21,7 +21,6 @@ const buildState = (defaultState) => {
       { id: 1, username: 'admin', password: 'adadad' },
     ],
   };
-
   if (defaultState.messages) {
     state.messages.push(...defaultState.messages);
   }
@@ -34,7 +33,6 @@ const buildState = (defaultState) => {
   if (defaultState.users) {
     state.users.push(...defaultState.users);
   }
-
   return state;
 };
 
