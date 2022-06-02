@@ -13,6 +13,11 @@ export default {
         userNotExist: 'Неверные имя пользователя или пароль',
       },
     },
+    notFoundPage: {
+      notFound: 'Страница не найдена',
+      jumpTo: 'Но вы можете перейти',
+      linkToMain: 'на главную страницу',
+    },
     registrationForm: {
       welcomeHeader: 'Регистрация',
       usernameLabel: 'Имя пользователя',

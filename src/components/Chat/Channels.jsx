@@ -93,7 +93,10 @@ const Channels = ({
                   </Dropdown.Toggle>
                   <Dropdown.Menu>
                     {dropActions.map((action) => (
-                      <Dropdown.Item onClick={() => handleShow(channel.id, action, channel.name)}>
+                      <Dropdown.Item
+                        key={action}
+                        onClick={() => handleShow(channel.id, action, channel.name)}
+                      >
                         {t(`channelsList.action${action}`)}
                       </Dropdown.Item>
                     ))}

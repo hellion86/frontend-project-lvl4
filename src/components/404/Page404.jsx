@@ -1,18 +1,17 @@
 /* eslint-disable jsx-a11y/alt-text */
-/* eslint-disable arrow-body-style */
 /* eslint-disable react/function-component-definition */
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import routes from '../../routes.js';
-import registrationImage from '../../../assets/image/registrationPage.jpg';
 
 const Page404 = () => {
+  const { t } = useTranslation();
   return (
     <div className="text-center">
-      <img src={registrationImage} />
-      <h1 className="h4 text-muted">Страница не найдена</h1>
-      <p className="text-muted">Но вы можете перейти </p>
-      <Link to={routes.chatPage()}>на главную страницу</Link>
+      <h1 className="h4 text-muted">{t('notFoundPage.notFound')}</h1>
+      <p className="text-muted">{t('notFoundPage.jumpTo')}</p>
+      <Link to={routes.chatPage()}>{t('notFoundPage.linkToMain')}</Link>
     </div>
   );
 };
