@@ -8,15 +8,15 @@ import '../assets/application.scss';
 
 const runApp = async () => {
   // eslint-disable-next-line no-undef
-  const rollbarConfig = {
-    accessToken: process.env.REACT_APP_ROLLBAR_TOKEN,
-    environment: 'production',
-  };
+  // const rollbarConfig = {
+  //   accessToken: process.env.REACT_APP_ROLLBAR_TOKEN,
+  //   environment: 'production',
+  // };
 
   filter.add(filter.getDictionary('ru'));
 
   const socket = io();
-  const app = await init(socket, rollbarConfig);
+  const app = await init(socket);
   ReactDOM.createRoot(document.getElementById('chat')).render(app);
 };
 
